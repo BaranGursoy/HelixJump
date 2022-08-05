@@ -7,13 +7,28 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float bounceForce;
+    [SerializeField] private float floorPassOffset = 0.3f;
 
+    [HideInInspector] public bool passedCurrentFloor;
+    
     private bool isJumping;
+    private Transform currentFloorTr;
+
+    private void Update()
+    {
+        CheckFloorPasses();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("PlatformPiece"))
         {
+            if (currentFloorTr != collision.transform.parent)
+            {
+                currentFloorTr = collision.transform.parent;
+                passedCurrentFloor = false;
+            }
+            
             if (!isJumping)
             {
                 Bounce();
@@ -34,5 +49,23 @@ public class Ball : MonoBehaviour
         isJumping = true;
         var force = bounceForce * Vector3.up;
         rb.AddForce(force, ForceMode.Impulse);
+    }
+
+    private void CheckFloorPasses()
+    {
+        if (currentFloorTr == null)
+        {
+            return;
+        }
+        
+        if (transform.position.y < currentFloorTr.position.y - floorPassOffset)
+        {
+            passedCurrentFloor = true;
+        }
+
+        else
+        {
+            passedCurrentFloor = false;
+        }
     }
 }
