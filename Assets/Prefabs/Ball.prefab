@@ -125,3 +125,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1104873906268080419}
   bounceForce: 3
+  floorPassOffset: -0.1
+  passedCurrentFloor: 0

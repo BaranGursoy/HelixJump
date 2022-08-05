@@ -12,7 +12,7 @@ public class Ball : MonoBehaviour
     [HideInInspector] public bool passedCurrentFloor;
     
     private bool isJumping;
-    private Transform currentFloorTr;
+    [HideInInspector] public Transform currentFloorTr;
 
     private void Update()
     {

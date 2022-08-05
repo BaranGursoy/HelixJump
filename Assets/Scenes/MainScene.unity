@@ -647,6 +647,8 @@ MonoBehaviour:
   ball: {fileID: 2127521384}
   mainCameraTr: {fileID: 116797557}
   offset: {x: 0, y: 1.2140002, z: -4.921}
+  smoothTime: 0.3
+  beginToFollowOffset: -1
 --- !u!1001 &1985660116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -919,11 +921,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 1104873906268080428, guid: badfc8ffb23914cb4947dfb61674bfb5,
-        type: 3}
-      propertyPath: floorPassOffset
-      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: badfc8ffb23914cb4947dfb61674bfb5, type: 3}
