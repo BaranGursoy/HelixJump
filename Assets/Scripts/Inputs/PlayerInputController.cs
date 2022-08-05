@@ -66,7 +66,7 @@ using UnityEngine;
 #if UNITY_EDITOR
             if (Input.GetMouseButton(0))
             {
-                var yAngle = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+                var yAngle = Input.GetAxis("Mouse X") * -rotationSpeed * Time.deltaTime;
                 UpdateTransform(yAngle);
             }
 #endif
