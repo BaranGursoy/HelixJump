@@ -4,14 +4,11 @@ using UnityEngine;
 
  public class PlayerInputController : MonoBehaviour
     {
-        public float rotationSpeed = 3F;
-
-        private Vector2 firstPressPosition;
-        private Vector2 secondPressPosition;
-        private Vector2 dragVector;
-        private Vector3 tempPosition;
+        [SerializeField] private float rotationSpeed = 1.5F;
         private bool playing;
         private bool rotating;
+
+        private Vector2 lastMousePos;
 
         [HideInInspector] public bool allowInput = true;
 
@@ -63,26 +60,31 @@ using UnityEngine;
 
         private void HandleInput()
         {
-#if UNITY_EDITOR
             if (Input.GetMouseButton(0))
             {
-                var yAngle = Input.GetAxis("Mouse X") * -rotationSpeed * Time.deltaTime;
-                UpdateTransform(yAngle);
-            }
-#endif
+                Vector2 currentMousePos = MousePosition;
 
-#if UNITY_IOS || UNITY_ANDROID
-            if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            {
-                var yAngle = Input.GetTouch(0).deltaPosition.x * rotationSpeed * Time.deltaTime;
-                transform.Rotate(0f, yAngle, 0f);
+                if (lastMousePos == Vector2.zero)
+                {
+                    lastMousePos = currentMousePos;
+                }
+
+                var deltaMouseX = lastMousePos.x - currentMousePos.x;
+                lastMousePos = currentMousePos;
+                
+                UpdateTransform(deltaMouseX);
             }
-#endif
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                lastMousePos = Vector2.zero;
+            }
+            
         } //FIXME burayi daha universal yapabilirsin
         
-        private void UpdateTransform(float yAngle)
+        private void UpdateTransform(float deltaMouseX)
         {
-            platformTr.Rotate(0f, yAngle, 0f);
+            platformTr.Rotate(Vector3.up * (deltaMouseX * rotationSpeed * Time.deltaTime));
         }
 
         #endregion
