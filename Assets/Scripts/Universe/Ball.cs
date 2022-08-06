@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -21,6 +22,13 @@ public class Ball : MonoBehaviour
     private bool isJumping;
     public Transform currentFloorTr;
     public Transform lastCollidedFloorTr;
+
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+    }
 
     public void Initialize(Floor startingFloor)
     {
@@ -94,8 +102,8 @@ public class Ball : MonoBehaviour
         var pointGained = 3;
         pointGained *= comboMultiplier;
         comboMultiplier++;
-        Debug.Log(pointGained);
         
+        gameManager.UpdatePlayerScore(pointGained);
     }
 
     public void FloorPassed()
