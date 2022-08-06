@@ -7,6 +7,7 @@ public class Floor : MonoBehaviour
 {
     [SerializeField] private List<PlatformPiece> platformPieces;
     private bool isFirstFloor;
+    private bool isFinishFloor;
     
     public void GetPlatformPieces()
     {
@@ -32,11 +33,6 @@ public class Floor : MonoBehaviour
 
     public void RandomlyCreatePlatformPiece()
     {
-        if (isFirstFloor)
-        {
-            return;
-        }
-
         Reset();
         
         int randomCountForHole = Random.Range(1, 4);
