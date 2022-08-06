@@ -23,9 +23,11 @@ public class Ball : MonoBehaviour
     {
         if (collision.transform.CompareTag("PlatformPiece"))
         {
-            if (currentFloorTr != collision.transform.parent)
+            var floorTr = collision.transform.parent.parent;
+            
+            if (currentFloorTr != floorTr)
             {
-                currentFloorTr = collision.transform.parent;
+                currentFloorTr = floorTr;
                 passedCurrentFloor = false;
             }
             
