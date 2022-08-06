@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float bounceForce;
     [SerializeField] private float floorPassOffset = 0.3f;
     [SerializeField] private ParticleSystem splashParticle;
+    [SerializeField] private BallAnimationController ballAnimationController;
 
     [HideInInspector] public bool passedCurrentFloor;
     
@@ -52,6 +53,7 @@ public class Ball : MonoBehaviour
         isJumping = true;
         
         splashParticle.Play();
+        ballAnimationController.PlayBounceAnimation();
         
         var force = bounceForce * Vector3.up;
         rb.AddForce(force, ForceMode.Impulse);
