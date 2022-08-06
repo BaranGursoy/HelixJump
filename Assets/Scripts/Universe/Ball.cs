@@ -8,6 +8,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float bounceForce;
     [SerializeField] private float floorPassOffset = 0.3f;
+    [SerializeField] private ParticleSystem splashParticle;
 
     [HideInInspector] public bool passedCurrentFloor;
     
@@ -49,6 +50,9 @@ public class Ball : MonoBehaviour
     private void Bounce()
     {
         isJumping = true;
+        
+        splashParticle.Play();
+        
         var force = bounceForce * Vector3.up;
         rb.AddForce(force, ForceMode.Impulse);
     }
