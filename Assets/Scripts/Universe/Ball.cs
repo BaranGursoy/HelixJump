@@ -10,6 +10,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float floorPassOffset = 0.3f;
     [SerializeField] private ParticleSystem splashParticle;
     [SerializeField] private BallAnimationController ballAnimationController;
+    [SerializeField] private GameObject splashSpritePrefab;
 
     [HideInInspector] public bool passedCurrentFloor;
     
@@ -36,6 +37,7 @@ public class Ball : MonoBehaviour
             if (!isJumping)
             {
                 Bounce();
+                CreatePaintSplash(floorTr, collision.contacts[0].point);
             }
         }
     }
@@ -75,5 +77,10 @@ public class Ball : MonoBehaviour
         {
             passedCurrentFloor = false;
         }
+    }
+
+    private void CreatePaintSplash(Transform parentTr, Vector3 spawnPos)
+    {
+        var splashObj = Instantiate(splashSpritePrefab, spawnPos, Quaternion.Euler(90f, 0f, 0f), parentTr);
     }
 }
