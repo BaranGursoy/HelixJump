@@ -457,7 +457,11 @@ MonoBehaviour:
   meshRenderer: {fileID: 3361845688841661604}
   platformPieceType: 0
   normalMat: {fileID: 2100000, guid: c4ad1aa45d1ff4c3991ebcc9728770d7, type: 2}
+  normalTransparentMat: {fileID: 2100000, guid: c5c9c51962c7c4e70ab779f82450537a,
+    type: 2}
   obstacleMat: {fileID: 2100000, guid: b4cd63a60769b4b95894ac73bcf71f35, type: 2}
+  obstacleTransparentMat: {fileID: 2100000, guid: adb6e2ff0fa874a29b83686572b5facd,
+    type: 2}
   rb: {fileID: 8713382615357280235}
   explosionForce: 2
   requiredTimeForFadeOut: 1

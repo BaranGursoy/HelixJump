@@ -9854,7 +9854,7 @@ PrefabInstance:
     - target: {fileID: 4534139710478096331, guid: 7567d0cdb7fa54003abd3fd2e8c5828e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4534139710478096331, guid: 7567d0cdb7fa54003abd3fd2e8c5828e,
         type: 3}
@@ -10079,7 +10079,7 @@ PrefabInstance:
     - target: {fileID: 4534139710478096331, guid: 7567d0cdb7fa54003abd3fd2e8c5828e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4534139710478096331, guid: 7567d0cdb7fa54003abd3fd2e8c5828e,
         type: 3}
@@ -10171,7 +10171,7 @@ PrefabInstance:
     - target: {fileID: 4534139710478096331, guid: 7567d0cdb7fa54003abd3fd2e8c5828e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4534139710478096331, guid: 7567d0cdb7fa54003abd3fd2e8c5828e,
         type: 3}
@@ -10320,6 +10320,7 @@ MonoBehaviour:
   - {fileID: 953057578229287495}
   - {fileID: 953057576698546547}
   - {fileID: 953057578412942528}
+  disabledPieces: []
 --- !u!1001 &2307402381013645122
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10498,6 +10499,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7528594909248218365, guid: 29aa8ea63ceba441aa6171d189b7c424,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -62.729492
+      objectReference: {fileID: 0}
     - target: {fileID: 7528594910386410983, guid: 29aa8ea63ceba441aa6171d189b7c424,
         type: 3}
       propertyPath: m_Pivot.x

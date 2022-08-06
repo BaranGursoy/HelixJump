@@ -9,7 +9,9 @@ public class PlatformPiece : MonoBehaviour
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private PlatformPieceType platformPieceType;
     [SerializeField] private Material normalMat;
+    [SerializeField] private Material normalTransparentMat;
     [SerializeField] private Material obstacleMat;
+    [SerializeField] private Material obstacleTransparentMat;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float explosionForce;
     [SerializeField] private float requiredTimeForFadeOut = 1f;
@@ -56,7 +58,19 @@ public class PlatformPiece : MonoBehaviour
 
     public void ExplodePiece()
     {
+        if (platformPieceType == PlatformPieceType.Normal)
+        {
+            meshRenderer.material = normalTransparentMat;
+        }
+
+        if (platformPieceType == PlatformPieceType.Obstacle)
+        {
+            meshRenderer.material = obstacleTransparentMat;
+        }
+        
         rb.isKinematic = false;
+        
+        transform.SetParent(null);
         
         var force = transform.right * explosionForce;
         rb.AddForce(force, ForceMode.Impulse);
