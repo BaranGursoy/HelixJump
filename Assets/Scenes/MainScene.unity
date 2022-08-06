@@ -584,6 +584,8 @@ MonoBehaviour:
   - {fileID: 1782164058}
   - {fileID: 105458730}
   - {fileID: 1985660118}
+  floorPassOffset: 0.3
+  ball: {fileID: 2127521384}
 --- !u!4 &1561370954 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 953057578458357001, guid: 8cae3d32228414e6e9750f835a302d11,
@@ -1187,6 +1189,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104873906268080428, guid: badfc8ffb23914cb4947dfb61674bfb5,
+        type: 3}
+      propertyPath: mainPlatform
+      value: 
+      objectReference: {fileID: 962995834}
+    - target: {fileID: 1104873906268080428, guid: badfc8ffb23914cb4947dfb61674bfb5,
+        type: 3}
+      propertyPath: isOnFirstFloor
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: badfc8ffb23914cb4947dfb61674bfb5, type: 3}

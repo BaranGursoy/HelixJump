@@ -37,8 +37,10 @@ public class CameraController : MonoBehaviour
             mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
         }
 
-        else if(Mathf.Abs(mainCameraTr.position.y - targetPos.y) > 0.1f && ball.currentFloorTr) // FIXME bir kere basta cok icine giriyor kamera
+
+        else if(Mathf.Abs(mainCameraTr.position.y - targetPos.y) > 0.1f && ball.currentFloorTr != null) // FIXME bir kere basta cok icine giriyor kamera
         {
+            targetPos = ballTr.position + offset;
             mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
         }
     }

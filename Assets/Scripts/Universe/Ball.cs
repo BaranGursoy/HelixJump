@@ -7,19 +7,39 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float bounceForce;
-    [SerializeField] private float floorPassOffset = 0.3f;
     [SerializeField] private ParticleSystem splashParticle;
     [SerializeField] private BallAnimationController ballAnimationController;
     [SerializeField] private GameObject splashSpritePrefab;
+    [SerializeField] private MainPlatform mainPlatform;
 
     [HideInInspector] public bool passedCurrentFloor;
-    
-    private bool isJumping;
-    [HideInInspector] public Transform currentFloorTr;
+    [HideInInspector] public bool isFalling;
+    [HideInInspector] public bool canMakeCombo;
 
+    private int comboMultiplier = 1;
+
+    private bool isJumping;
+    public Transform currentFloorTr;
+    public Transform lastCollidedFloorTr;
+
+    public void Initialize(Floor startingFloor)
+    {
+        currentFloorTr = startingFloor.transform;
+    }
+    
     private void Update()
     {
-        CheckFloorPasses();
+        mainPlatform.CheckForFloorNumber(transform.position);
+
+        if (!isFalling)
+        {
+            return;
+        }
+
+        if (currentFloorTr != lastCollidedFloorTr)
+        {
+            canMakeCombo = true; 
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -27,17 +47,19 @@ public class Ball : MonoBehaviour
         if (collision.transform.CompareTag("PlatformPiece"))
         {
             var floorTr = collision.transform.parent.parent;
-            
-            if (currentFloorTr != floorTr)
-            {
-                currentFloorTr = floorTr;
-                passedCurrentFloor = false;
-            }
-            
+
+            lastCollidedFloorTr = floorTr;
+
             if (!isJumping)
             {
                 Bounce();
                 CreatePaintSplash(floorTr, collision.contacts[0].point);
+            }
+
+            if (lastCollidedFloorTr == currentFloorTr)
+            {
+                canMakeCombo = false;
+                comboMultiplier = 1;
             }
         }
     }
@@ -60,27 +82,24 @@ public class Ball : MonoBehaviour
         var force = bounceForce * Vector3.up;
         rb.AddForce(force, ForceMode.Impulse);
     }
-
-    private void CheckFloorPasses()
-    {
-        if (currentFloorTr == null)
-        {
-            return;
-        }
-        
-        if (transform.position.y < currentFloorTr.position.y - floorPassOffset)
-        {
-            passedCurrentFloor = true;
-        }
-
-        else
-        {
-            passedCurrentFloor = false;
-        }
-    }
+    
 
     private void CreatePaintSplash(Transform parentTr, Vector3 spawnPos)
     {
         var splashObj = Instantiate(splashSpritePrefab, spawnPos, Quaternion.Euler(90f, 0f, 0f), parentTr);
+    }
+
+    public void CheckForCombo()
+    {
+        var pointGained = 3;
+        pointGained *= comboMultiplier;
+        comboMultiplier++;
+        Debug.Log(pointGained);
+        
+    }
+
+    public void FloorPassed()
+    {
+        isFalling = true;
     }
 }
