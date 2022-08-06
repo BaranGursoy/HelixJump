@@ -74,7 +74,7 @@ using UnityEngine;
 #if UNITY_IOS || UNITY_ANDROID
             if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
-                var yAngle = Input.GetTouch(0).deltaPosition * rotationSpeed * Time.deltaTime;
+                var yAngle = Input.GetTouch(0).deltaPosition.x * rotationSpeed * Time.deltaTime;
                 transform.Rotate(0f, yAngle, 0f);
             }
 #endif
