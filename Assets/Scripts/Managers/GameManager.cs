@@ -40,6 +40,11 @@ namespace Managers
             canvasManager.CreateFlyingPointForUI(point);
             canvasManager.UpdatePlayerScoreText(playerScore);
         }
+
+        public void UpdateLevelProgressionBar(int currentFloorNumber, int totalFloorNumber)
+        {
+            canvasManager.UpdateLevelProgressionBar(currentFloorNumber, totalFloorNumber);
+        }
     }
     
     

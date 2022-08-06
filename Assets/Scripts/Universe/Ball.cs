@@ -24,15 +24,17 @@ public class Ball : MonoBehaviour
     public Transform lastCollidedFloorTr;
 
     private GameManager gameManager;
+    private int totalFloorCount;
 
     private void Start()
     {
         gameManager = GameManager.Instance;
     }
 
-    public void Initialize(Floor startingFloor)
+    public void Initialize(Floor startingFloor, int totalFloorCount)
     {
         currentFloorTr = startingFloor.transform;
+        this.totalFloorCount = totalFloorCount;
     }
     
     private void Update()
@@ -97,13 +99,14 @@ public class Ball : MonoBehaviour
         var splashObj = Instantiate(splashSpritePrefab, spawnPos, Quaternion.Euler(90f, 0f, 0f), parentTr);
     }
 
-    public void CheckForCombo()
+    public void CheckForCombo(int currentFloorNumber)
     {
         var pointGained = 3;
         pointGained *= comboMultiplier;
         comboMultiplier++;
         
         gameManager.UpdatePlayerScore(pointGained);
+        gameManager.UpdateLevelProgressionBar(currentFloorNumber, totalFloorCount);
     }
 
     public void FloorPassed()

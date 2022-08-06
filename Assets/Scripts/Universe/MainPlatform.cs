@@ -18,7 +18,7 @@ public class MainPlatform : MonoBehaviour
     private void Start()
     {
         floorCount = floors.Count;
-        ball.Initialize(floors[currentFloorNumber]);
+        ball.Initialize(floors[currentFloorNumber], floorCount);
         currentFloor = floors[currentFloorNumber];
     }
 
@@ -49,7 +49,7 @@ public class MainPlatform : MonoBehaviour
             
             currentFloor = floors[currentFloorNumber];
             ball.currentFloorTr = currentFloor.transform;
-            ball.CheckForCombo();
+            ball.CheckForCombo(currentFloorNumber);
         }
 
         else
