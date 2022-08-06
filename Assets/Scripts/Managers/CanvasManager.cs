@@ -25,11 +25,18 @@ namespace Managers
         #endregion
 
         [SerializeField] private TextMeshProUGUI playerScoreTMP;
+        [SerializeField] private Transform GameUITr;
         [SerializeField] private GameObject flyingPointPrefab;
 
         public void UpdatePlayerScoreText(int playerScore)
         {
             playerScoreTMP.text = playerScore.ToString();
+        }
+
+        public void CreateFlyingPointForUI(int point)
+        {
+            var flyingPoint = Instantiate(flyingPointPrefab, GameUITr).GetComponent<FlyingPointText>();
+            flyingPoint.SetPointText(point);
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Managers
         public void UpdatePlayerScore(int point)
         {
             playerScore += point;
+            canvasManager.CreateFlyingPointForUI(point);
             canvasManager.UpdatePlayerScoreText(playerScore);
         }
     }

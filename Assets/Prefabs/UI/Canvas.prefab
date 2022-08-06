@@ -113,7 +113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerScoreTMP: {fileID: 7528594910476768545}
-  flyingPointPrefab: {fileID: 0}
+  GameUITr: {fileID: 7528594909248218365}
+  flyingPointPrefab: {fileID: 5716792385229702283, guid: 4a064b572d332418fbf6d14aa6d1f83f,
+    type: 3}
 --- !u!1 &7528594910440338649
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,6 +268,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482466308497167180, guid: ef206533b3dcd4690bdc36481d492cb4,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.33241364
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482466308497167180, guid: ef206533b3dcd4690bdc36481d492cb4,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.6094541
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482466308497167180, guid: ef206533b3dcd4690bdc36481d492cb4,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8490566
       objectReference: {fileID: 0}
     - target: {fileID: 1482466308815886050, guid: ef206533b3dcd4690bdc36481d492cb4,
         type: 3}
