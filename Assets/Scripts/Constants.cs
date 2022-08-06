@@ -5,5 +5,5 @@ using UnityEngine;
 public static class Constants
 {
     // Values
-    public const float FirstFloorYLocalPos = 0.96F;
+    public const float FirstFloorYPos = 4.73F;
 }

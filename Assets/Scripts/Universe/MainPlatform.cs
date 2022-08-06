@@ -39,16 +39,17 @@ public class MainPlatform : MonoBehaviour
         
         floors.Clear();
         
-        float lastY = Constants.FirstFloorYLocalPos;
+        float lastY = Constants.FirstFloorYPos;
         
         for (int i = 0; i < wantedFloorNumber; i++)
         {
             var pos = Vector3.zero;
             pos.y = lastY;
 
-            var createdFloorObj = PrefabUtility.InstantiatePrefab(floorPrefab, transform) as GameObject;
+            var createdFloorObj = PrefabUtility.InstantiatePrefab(floorPrefab) as GameObject;
+            createdFloorObj.transform.SetParent(transform);
             var createdFloor = createdFloorObj.GetComponent<Floor>();
-            createdFloor.transform.localPosition = pos;
+            createdFloor.transform.position = pos;
 
             lastY -= floorsYDelta;
             
@@ -57,9 +58,10 @@ public class MainPlatform : MonoBehaviour
         
         var finishPos = Vector3.zero;
         finishPos.y = lastY;
-        var finishFloorObj = PrefabUtility.InstantiatePrefab(finishPrefab, transform) as GameObject;
+        var finishFloorObj = PrefabUtility.InstantiatePrefab(finishPrefab) as GameObject;
+        finishFloorObj.transform.SetParent(transform);
         var finishFloor = finishFloorObj.GetComponent<Floor>();
-        finishFloor.transform.localPosition = finishPos;
+        finishFloor.transform.position = finishPos;
         floors.Add(finishFloor);
 
         for(int i=1; i<floors.Count - 1; i++)
@@ -67,6 +69,18 @@ public class MainPlatform : MonoBehaviour
             floors[i].RandomlyCreatePlatformPiece();
         }
     }
+
+    [Button(ButtonSizes.Large), GUIColor(1f, 0f, 0f)]
+    public void DeleteLevel()
+    {
+        foreach (var floor in floors)
+        {
+            DestroyImmediate(floor.gameObject);
+        }
+        
+        floors.Clear();
+    }
+    
 #endif
     public void CheckForFloorNumber(Vector3 ballPos)
     {
