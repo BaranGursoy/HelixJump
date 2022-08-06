@@ -6,7 +6,26 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Ball ball;
+    #region Singleton
+
+    public static CameraController Instance;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    #endregion
+    
+    private Ball ball;
     [SerializeField] private Transform mainCameraTr;
     [SerializeField] private Vector3 offset;
     
@@ -18,8 +37,9 @@ public class CameraController : MonoBehaviour
     
     private Vector3 targetPos;
 
-    private void Start()
+    public void Initialize(Ball ball)
     {
+        this.ball = ball;
         ballTr = ball.transform;
     }
 

@@ -1,9 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
  public class PlayerInputController : MonoBehaviour
     {
+        #region Singleton
+
+        public static PlayerInputController Instance;
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        #endregion
+        
         [SerializeField] private float rotationSpeed = 1.5F;
         private bool playing;
         private bool rotating;
@@ -12,13 +32,18 @@ using UnityEngine;
 
         [HideInInspector] public bool allowInput = true;
 
-        [SerializeField] private Transform platformTr;
+        private Transform platformTr;
         
         // Properties
         private static Vector3 MousePosition => Input.mousePosition;
 
         #region MonoBehaviour functions
 
+        public void Initialize(Transform platformTr)
+        {
+            this.platformTr = platformTr;
+        }
+        
         private void Start()
         {
             SetPlaying(true);

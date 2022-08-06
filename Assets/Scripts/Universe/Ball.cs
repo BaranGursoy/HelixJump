@@ -12,6 +12,9 @@ public class Ball : MonoBehaviour
     [SerializeField] private BallAnimationController ballAnimationController;
     [SerializeField] private GameObject splashSpritePrefab;
     [SerializeField] private MainPlatform mainPlatform;
+    
+    [SerializeField] private MeshRenderer ballMeshRenderer;
+    [SerializeField] private TrailRenderer trailRenderer;
 
     [HideInInspector] public bool passedCurrentFloor;
     [HideInInspector] public bool isFalling;
@@ -29,6 +32,7 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.Instance;
+        SetColorsOfBallParticles();
     }
 
     public void Initialize(Floor startingFloor, int totalFloorCount)
@@ -97,6 +101,10 @@ public class Ball : MonoBehaviour
     private void CreatePaintSplash(Transform parentTr, Vector3 spawnPos)
     {
         var splashObj = Instantiate(splashSpritePrefab, spawnPos, Quaternion.Euler(90f, 0f, 0f));
+        
+        var splashSpriteRenderer = splashObj.GetComponent<SpriteRenderer>();
+        splashSpriteRenderer.color = ballMeshRenderer.material.color;
+        
         splashObj.transform.SetParent(parentTr);
     }
 
@@ -113,5 +121,20 @@ public class Ball : MonoBehaviour
     public void FloorPassed()
     {
         isFalling = true;
+    }
+
+    private void SetColorsOfBallParticles()
+    {
+        var ballColor = ballMeshRenderer.material.color;
+        
+        var particleMainModule = splashParticle.main;
+        particleMainModule.startColor = ballColor;
+
+        trailRenderer.startColor = ballColor;
+
+        var trailEndColor = ballColor;
+        trailEndColor.a = 0f;
+        
+        trailRenderer.endColor = trailEndColor;
     }
 }

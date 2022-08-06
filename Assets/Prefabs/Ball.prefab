@@ -255,7 +255,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 445b23143398e4bc0897a5dc917e5f38, type: 2}
+  - {fileID: 2100000, guid: ef3da42ac13b2443281c65899d00c979, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -343,6 +343,8 @@ MonoBehaviour:
   splashSpritePrefab: {fileID: 7466949553068680389, guid: c5758504020744d76bb16cdca6e53091,
     type: 3}
   mainPlatform: {fileID: 0}
+  ballMeshRenderer: {fileID: 1104873906268080416}
+  trailRenderer: {fileID: 1974033035}
   passedCurrentFloor: 0
   isFalling: 0
   canMakeCombo: 0
