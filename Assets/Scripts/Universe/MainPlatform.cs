@@ -80,18 +80,28 @@ public class MainPlatform : MonoBehaviour
         
         floors.Clear();
     }
+
+    [Button(ButtonSizes.Large)]
+    public void GetAllPlatformPieces()
+    {
+        foreach (var floor in floors)
+        {
+            floor.UpdatePlatformPieces();
+        }
+    }
     
 #endif
     public void CheckForFloorNumber(Vector3 ballPos)
     {
         if (ballPos.y < currentFloor.transform.position.y - floorPassOffset)
         {
-            //FIXME currentFloor.Explode()
+            currentFloor.ExplodeFloor();
             ball.passedCurrentFloor = true;
             currentFloorNumber++;
             
             ball.FloorPassed();
-
+            
+            
             if (currentFloorNumber >= floorCount) return;
             
             currentFloor = floors[currentFloorNumber];

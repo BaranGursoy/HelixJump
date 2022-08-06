@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Floor : MonoBehaviour
 {
     [SerializeField] private List<PlatformPiece> platformPieces;
+    [SerializeField] private List<PlatformPiece> disabledPieces;
     private bool isFirstFloor;
     private bool isFinishFloor;
     
@@ -14,8 +17,19 @@ public class Floor : MonoBehaviour
         platformPieces = new List<PlatformPiece>();
         platformPieces = GetComponentsInChildren<PlatformPiece>().ToList();
     }
+    
+    public void UpdatePlatformPieces()
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            if (!platformPiece.gameObject.activeInHierarchy)
+            {
+                platformPieces.Remove(platformPiece);
+            }
+        }
+    }
 
-    private void Reset()
+    private void ResetFloor()
     {
         foreach (Transform childTr in transform)
         {
@@ -33,7 +47,7 @@ public class Floor : MonoBehaviour
 
     public void RandomlyCreatePlatformPiece()
     {
-        Reset();
+        ResetFloor();
         
         int randomCountForHole = Random.Range(1, 4);
         int closedCounter = 0;
@@ -89,4 +103,41 @@ public class Floor : MonoBehaviour
             }
         }
     }
+
+    public void ExplodeFloor()
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            platformPiece.ExplodePiece();
+        }
+    }
+
+    /*private void SortPlatformPieces()
+    {
+        platformPieces = platformPieces.OrderBy(x => x.transform.rotation.eulerAngles.y).ToList();
+    }
+
+    private void SetDisabledPieces()
+    {
+        foreach (Transform child in transform)
+        {
+            if (!child.gameObject.activeInHierarchy)
+            {
+                disabledPieces.Add(child.GetComponent<PlatformPiece>());
+            }
+        }
+    }
+
+    public void MakeCompoundPieces()
+    {
+        SearchForNeighbors();
+    }*/
+
+    /*private void SearchForNeighbors()
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            platformPiece.SearchNeighbor(ref platformPieces);
+        }
+    }*/
 }

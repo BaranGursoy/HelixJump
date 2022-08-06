@@ -56,14 +56,14 @@ public class Ball : MonoBehaviour
     {
         if (collision.transform.CompareTag("PlatformPiece"))
         {
-            var floorTr = collision.transform.parent.parent;
+            var floorTr = collision.transform.parent;
 
             lastCollidedFloorTr = floorTr;
 
             if (!isJumping)
             {
                 Bounce();
-                CreatePaintSplash(floorTr, collision.contacts[0].point);
+                CreatePaintSplash(collision.transform, collision.contacts[0].point);
             }
 
             if (lastCollidedFloorTr == currentFloorTr)
@@ -96,7 +96,8 @@ public class Ball : MonoBehaviour
 
     private void CreatePaintSplash(Transform parentTr, Vector3 spawnPos)
     {
-        var splashObj = Instantiate(splashSpritePrefab, spawnPos, Quaternion.Euler(90f, 0f, 0f), parentTr);
+        var splashObj = Instantiate(splashSpritePrefab, spawnPos, Quaternion.Euler(90f, 0f, 0f));
+        splashObj.transform.SetParent(parentTr);
     }
 
     public void CheckForCombo(int currentFloorNumber)
