@@ -113,7 +113,7 @@ using UnityEngine;
                 lastMousePos = Vector2.zero;
             }
             
-        } //FIXME burayi daha universal yapabilirsin
+        }
         
         private void UpdateTransform(float deltaMouseX)
         {

@@ -36,9 +36,17 @@ public class PlatformPiece : MonoBehaviour
     
     public void ChangeMaterial()
     {
+        if (meshRenderer == null)
+        {
+            return;
+        }
+        
         if (platformPieceType == PlatformPieceType.Normal)
         {
-            meshRenderer.material = normalMat;
+            if (!CompareTag("Finish"))
+            {
+                meshRenderer.material = normalMat;
+            }
         }
 
         if(platformPieceType == PlatformPieceType.Obstacle)
@@ -49,7 +57,10 @@ public class PlatformPiece : MonoBehaviour
     
     public void ChangeMaterial(Material material)
     {
-        meshRenderer.material = material;
+        if (meshRenderer && !CompareTag("Finish"))
+        {
+            meshRenderer.material = material;
+        }
     }
 
     public void ChangeTypeToObstacle()

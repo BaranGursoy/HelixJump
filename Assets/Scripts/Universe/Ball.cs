@@ -36,6 +36,9 @@ public class Ball : MonoBehaviour
     private Material originalMat;
     private bool feverModeActive;
     private bool boostModeActive;
+    private bool isJumpingAfterBoost;
+
+    private float collisionBugTimer;
 
     private void Start()
     {
@@ -54,11 +57,6 @@ public class Ball : MonoBehaviour
     private void Update()
     {
         mainPlatform.CheckForFloorNumber(transform.position);
-
-        if (!isFalling)
-        {
-            return;
-        }
     }
 
     public bool IsBoostModeActive()
@@ -77,7 +75,7 @@ public class Ball : MonoBehaviour
         var floor = floorTr.GetComponent<Floor>();
         floor.ExplodeFloor(originalMat);
         DeactivateFeverMode();
-        Bounce();
+        BounceAfterFeverAndBoost();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -92,6 +90,7 @@ public class Ball : MonoBehaviour
             if (!feverModeActive && !boostModeActive)
             {
                 GameManager.Instance.GameFinished(false);
+                rb.isKinematic = true;
                 return;
             }
             
@@ -112,11 +111,17 @@ public class Ball : MonoBehaviour
 
             lastCollidedFloorTr = floorTr;
 
-            if (!isJumping)
+            if (!isJumping && !isJumpingAfterBoost)
             {
                 Bounce();
-                CreatePaintSplash(collision.transform, collision.contacts[0].point);
+
+                var pos = collision.contacts[0].point;
+                pos.y = floorTr.position.y - 0.07f;
+                
+                CreatePaintSplash(collision.transform, pos);
             }
+
+            isJumpingAfterBoost = false;
 
             if (lastCollidedFloorTr == currentFloorTr)
             {
@@ -125,11 +130,17 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnCollisionStay(Collision collisionInfo)
     {
-        if (other.transform.CompareTag("PlatformPiece"))
+        if (collisionInfo.transform.CompareTag("PlatformPiece"))
         {
-            isJumping = false;
+            collisionBugTimer += Time.deltaTime;
+
+            if (collisionBugTimer > 0.3f)
+            {
+                Bounce();
+                collisionBugTimer = 0f;
+            }
         }
     }
 
@@ -156,8 +167,29 @@ public class Ball : MonoBehaviour
         
         var force = bounceForce * Vector3.up;
         rb.AddForce(force, ForceMode.Impulse);
+
+        StartCoroutine(MakeIsJumpingFalseCoroutine());
     }
-    
+
+    private IEnumerator MakeIsJumpingFalseCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isJumping = false;
+    }
+    private void BounceAfterFeverAndBoost()
+    {
+        if (!PlayerController.Instance.GetPlaying())
+        {
+            return;
+        }
+        
+        splashParticle.Play();
+        ballAnimationController.PlayBounceAnimation();
+        isJumpingAfterBoost = true;
+        
+        var force = bounceForce * Vector3.up;
+        rb.AddForce(force, ForceMode.Impulse);
+    }
 
     private void CreatePaintSplash(Transform parentTr, Vector3 spawnPos)
     {
@@ -253,7 +285,7 @@ public class Ball : MonoBehaviour
         mainPlatform.ChangeAllFloorMaterialsToOriginal();
         if (!isJumping)
         {
-            Bounce();
+            BounceAfterFeverAndBoost();
         }
     }
 }
