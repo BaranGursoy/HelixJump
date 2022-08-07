@@ -31,7 +31,7 @@ namespace Managers
         private CanvasManager canvasManager;
         private LevelManager levelManager;
         private CameraController cameraController;
-        private PlayerInputController playerInputController;
+        private PlayerController playerController;
 
         private GameObject lastCreatedLevel;
 
@@ -41,7 +41,7 @@ namespace Managers
             canvasManager = CanvasManager.Instance;
             levelManager = LevelManager.Instance;
             cameraController = CameraController.Instance;
-            playerInputController = PlayerInputController.Instance;
+            playerController = PlayerController.Instance;
 
             LoadNextLevel();
         }
@@ -56,6 +56,11 @@ namespace Managers
         public void UpdateLevelProgressionBar(int currentFloorNumber, int totalFloorNumber)
         {
             canvasManager.UpdateLevelProgressionBar(currentFloorNumber, totalFloorNumber);
+        }
+
+        public int GetLevelId()
+        {
+            return levelId;
         }
 
         public void LoadNextLevel()
@@ -83,7 +88,7 @@ namespace Managers
             var levelDataHolder = lastCreatedLevel.GetComponent<LevelDataHolder>();
 
             cameraController.Initialize(levelDataHolder.ball);
-            playerInputController.Initialize(levelDataHolder.mainPlatform.transform);
+            playerController.Initialize(levelDataHolder.mainPlatform.transform);
         }
 
         public void IncreaseLevelId()
@@ -97,12 +102,12 @@ namespace Managers
             playerScore = 0;
             canvasManager.Reset();
             cameraController.Reset();
-            playerInputController.Reset();
+            playerController.Reset();
         }
 
         public void GameFinished(bool won)
         {
-            playerInputController.LevelCompleted();
+            playerController.LevelCompleted();
             canvasManager.LevelFinished(won);
 
             if (won)

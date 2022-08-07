@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
- public class PlayerInputController : MonoBehaviour
+ public class PlayerController : MonoBehaviour
     {
         #region Singleton
 
-        public static PlayerInputController Instance;
+        public static PlayerController Instance;
 
         private void Awake()
         {

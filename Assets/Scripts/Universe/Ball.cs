@@ -15,10 +15,13 @@ public class Ball : MonoBehaviour
     
     [SerializeField] private MeshRenderer ballMeshRenderer;
     [SerializeField] private TrailRenderer trailRenderer;
+    [SerializeField] private Material feverModeMat;
 
     [HideInInspector] public bool passedCurrentFloor;
     [HideInInspector] public bool isFalling;
     [HideInInspector] public bool canMakeCombo;
+
+    private int baseGainedPoint;
 
     private int comboMultiplier = 1;
 
@@ -29,9 +32,12 @@ public class Ball : MonoBehaviour
     private GameManager gameManager;
     private int totalFloorCount;
 
+    private bool feverModeActive;
+
     private void Start()
     {
         gameManager = GameManager.Instance;
+        baseGainedPoint = gameManager.GetLevelId();
         SetColorsOfBallParticles();
     }
 
@@ -99,7 +105,7 @@ public class Ball : MonoBehaviour
 
     private void Bounce()
     {
-        if (!PlayerInputController.Instance.GetPlaying())
+        if (!PlayerController.Instance.GetPlaying())
         {
             return;
         }
@@ -126,9 +132,14 @@ public class Ball : MonoBehaviour
 
     public void CheckForCombo(int currentFloorNumber)
     {
-        var pointGained = 3;
+        var pointGained = baseGainedPoint;
         pointGained *= comboMultiplier;
         comboMultiplier++;
+
+        if (comboMultiplier == 4)
+        {
+            ActivateFeverMode();
+        }
         
         gameManager.UpdatePlayerScore(pointGained);
         gameManager.UpdateLevelProgressionBar(currentFloorNumber, totalFloorCount);
@@ -152,5 +163,18 @@ public class Ball : MonoBehaviour
         trailEndColor.a = 0f;
         
         trailRenderer.endColor = trailEndColor;
+    }
+
+    private void ActivateFeverMode()
+    {
+        feverModeActive = true;
+        ChangeMaterialsForFeverMode();
+        // FIXME add particle effects for fever mode and call them from here
+    }
+
+    private void ChangeMaterialsForFeverMode()
+    {
+        ballMeshRenderer.material = feverModeMat;
+        SetColorsOfBallParticles();
     }
 }
