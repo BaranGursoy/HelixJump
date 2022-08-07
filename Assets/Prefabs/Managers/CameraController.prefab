@@ -49,6 +49,7 @@ MonoBehaviour:
   smoothTime: 0.3
   confettiRightObj: {fileID: 6983681263666990222}
   confettiLeftObj: {fileID: 6983681262935878871}
+  postProcessVolume: {fileID: 0}
 --- !u!1 &6984474020540451657
 GameObject:
   m_ObjectHideFlags: 0

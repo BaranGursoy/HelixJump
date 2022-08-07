@@ -123,12 +123,6 @@ public class MainPlatform : MonoBehaviour
             ball.currentFloorTr = currentFloor.transform;
             ball.CheckForCombo(currentFloorNumber);
         }
-
-        else
-        {
-            ball.passedCurrentFloor = false;
-        }
-        
     }
     
 }

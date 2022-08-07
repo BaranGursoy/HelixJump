@@ -91,6 +91,8 @@ public class Ball : MonoBehaviour
         
         if (collision.transform.CompareTag("PlatformPiece"))
         {
+            passedCurrentFloor = false;
+            
             var floorTr = collision.transform.parent;
             
             if (feverModeActive)

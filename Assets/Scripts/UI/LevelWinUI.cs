@@ -9,6 +9,7 @@ public class LevelWinUI : MonoBehaviour
     {
         GameManager.Instance.IncreaseLevelId();
         GameManager.Instance.LoadNextLevel();
+        CameraController.Instance.RandomizeColorsWithHue();
         gameObject.SetActive(false);
     }
 }

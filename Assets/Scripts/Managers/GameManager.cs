@@ -82,7 +82,7 @@ namespace Managers
             }
             
             canvasManager.ChangeLevelIndicatorNumbers(levelId);
-            
+
             var levelPrefab = levelManager.GetNextLevel(levelId);
             lastCreatedLevel = Instantiate(levelPrefab);
             var levelDataHolder = lastCreatedLevel.GetComponent<LevelDataHolder>();

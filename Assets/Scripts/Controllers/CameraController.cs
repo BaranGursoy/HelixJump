@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
+using Random = UnityEngine.Random;
 
 public class CameraController : MonoBehaviour
 {
@@ -35,6 +37,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject confettiRightObj;
     [SerializeField] private GameObject confettiLeftObj;
 
+    [SerializeField] private PostProcessVolume postProcessVolume;
+    private ColorGrading colorGrading;
+
 
     private Transform ballTr;
     
@@ -45,6 +50,16 @@ public class CameraController : MonoBehaviour
         this.ball = ball;
         ballTr = ball.transform;
     }
+
+    public void RandomizeColorsWithHue()
+    {
+        postProcessVolume.profile.TryGetSettings(out colorGrading);
+
+        int randomChoice = Random.Range(0, 2);
+
+        colorGrading.hueShift.value = randomChoice == 0 ? 0f : Random.Range(-180f, 180f);
+    }
+    
 
     [Button(ButtonSizes.Large)]
     public void GetAndSetCurrentOffset()
@@ -61,7 +76,7 @@ public class CameraController : MonoBehaviour
         }
 
 
-        else if(Mathf.Abs(mainCameraTr.position.y - targetPos.y) > 0.1f && ball.currentFloorTr != null) // FIXME bir kere basta cok icine giriyor kamera
+        else if(Mathf.Abs(mainCameraTr.position.y - targetPos.y) > 0.1f && ball.currentFloorTr != null)
         {
             targetPos = ballTr.position + offset;
             mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
