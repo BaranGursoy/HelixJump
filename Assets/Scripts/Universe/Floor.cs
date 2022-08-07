@@ -11,11 +11,22 @@ public class Floor : MonoBehaviour
     [SerializeField] private List<PlatformPiece> disabledPieces;
     private bool isFirstFloor;
     private bool isFinishFloor;
+    private bool hasExploded;
     
     public void GetPlatformPieces()
     {
         platformPieces = new List<PlatformPiece>();
         platformPieces = GetComponentsInChildren<PlatformPiece>().ToList();
+    }
+
+    public void SetHasExploded()
+    {
+        hasExploded = true;
+    }
+
+    public bool HasFloorExploded()
+    {
+        return hasExploded;
     }
     
     public void UpdatePlatformPieces()
@@ -42,6 +53,14 @@ public class Floor : MonoBehaviour
         {
             platformPiece.ChangeTypeToNormal();
             platformPiece.ChangeMaterial();
+        }
+    }
+
+    public void ChangeFloorMaterials(Material material)
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            platformPiece.ChangeMaterial(material);
         }
     }
 
@@ -116,11 +135,12 @@ public class Floor : MonoBehaviour
         }
     }
     
-    public void ExplodeFloor()
+    public void ExplodeFloor(Material material)
     {
+        SetHasExploded();
         foreach (var platformPiece in platformPieces)
         {
-            platformPiece.ExplodePiece();
+            platformPiece.ExplodePiece(material);
         }
     }
 

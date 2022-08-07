@@ -105,7 +105,12 @@ public class MainPlatform : MonoBehaviour
     {
         if (ballPos.y < currentFloor.transform.position.y - floorPassOffset)
         {
-            currentFloor.ExplodeFloor();
+
+            if (!currentFloor.HasFloorExploded())
+            {
+                currentFloor.ExplodeFloor(null);
+            }
+                
             ball.passedCurrentFloor = true;
             currentFloorNumber++;
             

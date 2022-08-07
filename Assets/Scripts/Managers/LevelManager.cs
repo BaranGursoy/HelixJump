@@ -37,7 +37,7 @@ public class LevelManager : MonoBehaviour
         
         else if (levelId % levels.Count == 0)
         {
-            actualLevelIndex = levelId - 1;
+            actualLevelIndex = levels.Count - 1;
         }
         
         Debug.Log(actualLevelIndex); // FIXME delete this

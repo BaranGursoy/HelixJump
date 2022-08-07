@@ -16,10 +16,10 @@ public class Ball : MonoBehaviour
     [SerializeField] private MeshRenderer ballMeshRenderer;
     [SerializeField] private TrailRenderer trailRenderer;
     [SerializeField] private Material feverModeMat;
+    [SerializeField] private GameObject feverModeParticleObj;
 
     [HideInInspector] public bool passedCurrentFloor;
     [HideInInspector] public bool isFalling;
-    [HideInInspector] public bool canMakeCombo;
 
     private int baseGainedPoint;
 
@@ -32,12 +32,14 @@ public class Ball : MonoBehaviour
     private GameManager gameManager;
     private int totalFloorCount;
 
+    private Material originalMat;
     private bool feverModeActive;
 
     private void Start()
     {
         gameManager = GameManager.Instance;
         baseGainedPoint = gameManager.GetLevelId();
+        originalMat = ballMeshRenderer.sharedMaterial;
         SetColorsOfBallParticles();
     }
 
@@ -55,11 +57,15 @@ public class Ball : MonoBehaviour
         {
             return;
         }
+    }
 
-        if (currentFloorTr != lastCollidedFloorTr)
-        {
-            canMakeCombo = true; 
-        }
+    private void ExplodeFloorWithFeverMode(Collision collision)
+    {
+        var floorTr = collision.transform.parent;
+        var floor = floorTr.GetComponent<Floor>();
+        floor.ExplodeFloor(originalMat);
+        DeactivateFeverMode();
+        Bounce();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -71,13 +77,26 @@ public class Ball : MonoBehaviour
         
         if (collision.transform.CompareTag("Obstacle"))
         {
-            GameManager.Instance.GameFinished(false);
-            return;
+            if (!feverModeActive)
+            {
+                GameManager.Instance.GameFinished(false);
+                return;
+            }
+
+            else
+            {
+                ExplodeFloorWithFeverMode(collision);
+            }
         }
         
         if (collision.transform.CompareTag("PlatformPiece"))
         {
             var floorTr = collision.transform.parent;
+            
+            if (feverModeActive)
+            {
+                ExplodeFloorWithFeverMode(collision);
+            }
 
             lastCollidedFloorTr = floorTr;
 
@@ -89,7 +108,6 @@ public class Ball : MonoBehaviour
 
             if (lastCollidedFloorTr == currentFloorTr)
             {
-                canMakeCombo = false;
                 comboMultiplier = 1;
             }
         }
@@ -169,12 +187,25 @@ public class Ball : MonoBehaviour
     {
         feverModeActive = true;
         ChangeMaterialsForFeverMode();
-        // FIXME add particle effects for fever mode and call them from here
+        feverModeParticleObj.SetActive(true);
+    }
+
+    private void DeactivateFeverMode()
+    {
+        feverModeActive = false;
+        ChangeMaterialsToOriginal();
+        feverModeParticleObj.SetActive(false);
     }
 
     private void ChangeMaterialsForFeverMode()
     {
         ballMeshRenderer.material = feverModeMat;
+        SetColorsOfBallParticles();
+    }
+
+    private void ChangeMaterialsToOriginal()
+    {
+        ballMeshRenderer.material = originalMat;
         SetColorsOfBallParticles();
     }
 }

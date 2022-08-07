@@ -463,6 +463,16 @@ MonoBehaviour:
   obstacleTransparentMat: {fileID: 2100000, guid: adb6e2ff0fa874a29b83686572b5facd,
     type: 2}
   rb: {fileID: 8713382615357280235}
+  colliders:
+  - {fileID: 6539982054886661543}
+  - {fileID: 755564206643199926}
+  - {fileID: 3813371102201603893}
+  - {fileID: 7777104153682066703}
+  - {fileID: 659998}
+  - {fileID: 1845801355}
+  - {fileID: 1505631004}
+  - {fileID: 7338417}
+  - {fileID: 1910151392}
   explosionForce: 2
   requiredTimeForFadeOut: 1
   isPieceOfCompoundBlock: 0

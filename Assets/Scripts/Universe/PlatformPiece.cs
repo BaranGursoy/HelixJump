@@ -13,6 +13,7 @@ public class PlatformPiece : MonoBehaviour
     [SerializeField] private Material obstacleMat;
     [SerializeField] private Material obstacleTransparentMat;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private List<Collider> colliders;
     [SerializeField] private float explosionForce;
     [SerializeField] private float requiredTimeForFadeOut = 1f;
 
@@ -45,6 +46,11 @@ public class PlatformPiece : MonoBehaviour
             meshRenderer.material = obstacleMat;
         }
     }
+    
+    public void ChangeMaterial(Material material)
+    {
+        meshRenderer.material = material;
+    }
 
     public void ChangeTypeToObstacle()
     {
@@ -61,19 +67,26 @@ public class PlatformPiece : MonoBehaviour
         return platformPieceType;
     }
 
-    public void ExplodePiece()
+    public void ExplodePiece(Material material)
     {
-        if (platformPieceType == PlatformPieceType.Normal)
+        if (material)
         {
-            meshRenderer.material = normalTransparentMat;
+            meshRenderer.material = material;
         }
-
-        if (platformPieceType == PlatformPieceType.Obstacle)
+        
+        else switch (platformPieceType)
         {
-            meshRenderer.material = obstacleTransparentMat;
+            case PlatformPieceType.Normal:
+                meshRenderer.material = normalTransparentMat;
+                break;
+            case PlatformPieceType.Obstacle:
+                meshRenderer.material = obstacleTransparentMat;
+                break;
         }
         
         rb.isKinematic = false;
+
+        CloseColliders();
         
         transform.SetParent(null);
         
@@ -99,5 +112,13 @@ public class PlatformPiece : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private void CloseColliders()
+    {
+        foreach (var collider in colliders)
+        {
+            collider.isTrigger = true;
+        }
     }
 }
