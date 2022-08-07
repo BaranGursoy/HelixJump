@@ -105,8 +105,12 @@ public class MainPlatform : MonoBehaviour
     {
         if (ballPos.y < currentFloor.transform.position.y - floorPassOffset)
         {
+            if (ball.IsBoostModeActive())
+            {
+                currentFloor.ExplodeFloor(ball.GetBoostMaterial());
+            }
 
-            if (!currentFloor.HasFloorExploded())
+            else if (!currentFloor.HasFloorExploded())
             {
                 currentFloor.ExplodeFloor(null);
             }
@@ -122,6 +126,22 @@ public class MainPlatform : MonoBehaviour
             currentFloor = floors[currentFloorNumber];
             ball.currentFloorTr = currentFloor.transform;
             ball.CheckForCombo(currentFloorNumber);
+        }
+    }
+
+    public void ChangeAllFloorMaterials(Material boostMat)
+    {
+        foreach (var floor in floors)
+        {
+            floor.ChangeFloorMaterials(boostMat);
+        }
+    }
+
+    public void ChangeAllFloorMaterialsToOriginal()
+    {
+        foreach (var floor in floors)
+        {
+            floor.ChangeFloorMaterialsToOriginal();
         }
     }
     

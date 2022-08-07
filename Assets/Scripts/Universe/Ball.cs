@@ -17,6 +17,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private TrailRenderer trailRenderer;
     [SerializeField] private Material feverModeMat;
     [SerializeField] private GameObject feverModeParticleObj;
+    [SerializeField] private Collider ballCollider;
 
     [HideInInspector] public bool passedCurrentFloor;
     [HideInInspector] public bool isFalling;
@@ -34,6 +35,7 @@ public class Ball : MonoBehaviour
 
     private Material originalMat;
     private bool feverModeActive;
+    private bool boostModeActive;
 
     private void Start()
     {
@@ -59,6 +61,16 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public bool IsBoostModeActive()
+    {
+        return boostModeActive;
+    }
+
+    public Material GetBoostMaterial()
+    {
+        return feverModeMat;
+    }
+    
     private void ExplodeFloorWithFeverMode(Collision collision)
     {
         var floorTr = collision.transform.parent;
@@ -77,16 +89,14 @@ public class Ball : MonoBehaviour
         
         if (collision.transform.CompareTag("Obstacle"))
         {
-            if (!feverModeActive)
+            if (!feverModeActive && !boostModeActive)
             {
                 GameManager.Instance.GameFinished(false);
                 return;
             }
-
-            else
-            {
-                ExplodeFloorWithFeverMode(collision);
-            }
+            
+            ExplodeFloorWithFeverMode(collision);
+           
         }
         
         if (collision.transform.CompareTag("PlatformPiece"))
@@ -94,7 +104,7 @@ public class Ball : MonoBehaviour
             passedCurrentFloor = false;
             
             var floorTr = collision.transform.parent;
-            
+
             if (feverModeActive)
             {
                 ExplodeFloorWithFeverMode(collision);
@@ -120,6 +130,15 @@ public class Ball : MonoBehaviour
         if (other.transform.CompareTag("PlatformPiece"))
         {
             isJumping = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Boost"))
+        {
+            ActivateBoostMode();
+            Destroy(other.gameObject);
         }
     }
 
@@ -209,5 +228,32 @@ public class Ball : MonoBehaviour
     {
         ballMeshRenderer.material = originalMat;
         SetColorsOfBallParticles();
+    }
+
+    private void ActivateBoostMode()
+    {
+        boostModeActive = true;
+        ballCollider.isTrigger = true;
+        ChangeMaterialsForFeverMode();
+        mainPlatform.ChangeAllFloorMaterials(feverModeMat);
+        StartCoroutine(BoostModeCor());
+    }
+
+    private IEnumerator BoostModeCor() // FIXME belki kat sayisina gore yapilabilir
+    {
+        yield return new WaitForSeconds(1.2f);
+        DeactivateBoostMode();
+    }
+
+    private void DeactivateBoostMode()
+    {
+        boostModeActive = false;
+        ballCollider.isTrigger = false;
+        ChangeMaterialsToOriginal();
+        mainPlatform.ChangeAllFloorMaterialsToOriginal();
+        if (!isJumping)
+        {
+            Bounce();
+        }
     }
 }

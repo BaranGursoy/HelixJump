@@ -64,6 +64,14 @@ public class Floor : MonoBehaviour
         }
     }
 
+    public void ChangeFloorMaterialsToOriginal()
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            platformPiece.ChangeMaterial();
+        }
+    }
+
     public void RandomlyCreatePlatformPiece()
     {
         ResetFloor();

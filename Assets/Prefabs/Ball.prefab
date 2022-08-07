@@ -348,6 +348,7 @@ MonoBehaviour:
   trailRenderer: {fileID: 1974033035}
   feverModeMat: {fileID: 2100000, guid: 445b23143398e4bc0897a5dc917e5f38, type: 2}
   feverModeParticleObj: {fileID: 8407819832407792371}
+  ballCollider: {fileID: 1104873906268080423}
   passedCurrentFloor: 0
   isFalling: 0
   currentFloorTr: {fileID: 0}
