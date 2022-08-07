@@ -118,9 +118,6 @@ public class MainPlatform : MonoBehaviour
             ball.passedCurrentFloor = true;
             currentFloorNumber++;
             
-            ball.FloorPassed();
-            
-            
             if (currentFloorNumber >= floorCount) return;
             
             currentFloor = floors[currentFloorNumber];

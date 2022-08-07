@@ -20,7 +20,6 @@ public class Ball : MonoBehaviour
     [SerializeField] private Collider ballCollider;
 
     [HideInInspector] public bool passedCurrentFloor;
-    [HideInInspector] public bool isFalling;
 
     private int baseGainedPoint;
 
@@ -101,6 +100,8 @@ public class Ball : MonoBehaviour
         if (collision.transform.CompareTag("PlatformPiece"))
         {
             passedCurrentFloor = false;
+
+            collisionBugTimer = 0f;
             
             var floorTr = collision.transform.parent;
 
@@ -136,7 +137,7 @@ public class Ball : MonoBehaviour
         {
             collisionBugTimer += Time.deltaTime;
 
-            if (collisionBugTimer > 0.3f)
+            if (collisionBugTimer > 0.15f)
             {
                 Bounce();
                 collisionBugTimer = 0f;
@@ -216,11 +217,6 @@ public class Ball : MonoBehaviour
         gameManager.UpdateLevelProgressionBar(currentFloorNumber, totalFloorCount);
     }
 
-    public void FloorPassed()
-    {
-        isFalling = true;
-    }
-
     private void SetColorsOfBallParticles()
     {
         var ballColor = ballMeshRenderer.material.color;
@@ -238,16 +234,28 @@ public class Ball : MonoBehaviour
 
     private void ActivateFeverMode()
     {
+        if (boostModeActive)
+        {
+            return;
+        }
+        
         feverModeActive = true;
         ChangeMaterialsForFeverMode();
         feverModeParticleObj.SetActive(true);
+        CameraController.Instance.ActivateVignette(feverModeMat);
     }
 
     private void DeactivateFeverMode()
     {
+        if (!feverModeActive)
+        {
+            return;
+        }
+        
         feverModeActive = false;
         ChangeMaterialsToOriginal();
         feverModeParticleObj.SetActive(false);
+        CameraController.Instance.DeactivateVignette();
     }
 
     private void ChangeMaterialsForFeverMode()
@@ -269,6 +277,7 @@ public class Ball : MonoBehaviour
         ChangeMaterialsForFeverMode();
         mainPlatform.ChangeAllFloorMaterials(feverModeMat);
         StartCoroutine(BoostModeCor());
+        CameraController.Instance.ActivateVignette(feverModeMat);
     }
 
     private IEnumerator BoostModeCor() // FIXME belki kat sayisina gore yapilabilir
@@ -279,6 +288,11 @@ public class Ball : MonoBehaviour
 
     private void DeactivateBoostMode()
     {
+        if (!boostModeActive)
+        {
+            return;
+        }
+        
         boostModeActive = false;
         ballCollider.isTrigger = false;
         ChangeMaterialsToOriginal();
@@ -287,5 +301,6 @@ public class Ball : MonoBehaviour
         {
             BounceAfterFeverAndBoost();
         }
+        CameraController.Instance.DeactivateVignette();
     }
 }

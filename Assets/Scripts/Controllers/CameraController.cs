@@ -40,15 +40,23 @@ public class CameraController : MonoBehaviour
     [SerializeField] private PostProcessVolume postProcessVolume;
     private ColorGrading colorGrading;
 
+    private Coroutine lastVignetteCoroutine;
+
 
     private Transform ballTr;
     
     private Vector3 targetPos;
+    private Vignette vignette;
 
     public void Initialize(Ball ball)
     {
         this.ball = ball;
         ballTr = ball.transform;
+    }
+
+    private void Start()
+    {
+        postProcessVolume.profile.TryGetSettings(out vignette);
     }
 
     public void RandomizeColorsWithHue()
@@ -59,7 +67,48 @@ public class CameraController : MonoBehaviour
 
         colorGrading.hueShift.value = randomChoice == 0 ? 0f : Random.Range(-180f, 180f);
     }
-    
+
+    public void ActivateVignette(Material material)
+    {
+        var color = material.color;
+
+        if (vignette)
+        {
+            vignette.color.value = color;
+            lastVignetteCoroutine = StartCoroutine(VignetteCoroutine(vignette));
+        }
+    }
+
+    public void DeactivateVignette()
+    {
+        if (lastVignetteCoroutine != null)
+        {
+            StopCoroutine(lastVignetteCoroutine);
+        }
+        
+        if (vignette)
+        {
+            vignette.intensity.value = 0f;
+        }
+    }
+
+    private IEnumerator VignetteCoroutine(Vignette vignette)
+    {
+        float requiredTime = 0.3f;
+        float timePassed = 0f;
+
+        float targetValue = 0.52f;
+        
+        while (timePassed < requiredTime)
+        {
+            vignette.intensity.value = Mathf.Lerp(0f, targetValue, timePassed / requiredTime);
+            
+            timePassed += Time.deltaTime;
+            yield return null;
+        }
+
+        vignette.intensity.value = targetValue;
+    }
 
     [Button(ButtonSizes.Large)]
     public void GetAndSetCurrentOffset()
