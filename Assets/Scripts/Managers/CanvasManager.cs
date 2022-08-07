@@ -28,11 +28,15 @@ namespace Managers
         #endregion
 
         [SerializeField] private TextMeshProUGUI playerScoreTMP;
+        [SerializeField] private TextMeshProUGUI bestScoreTMP;
         [SerializeField] private Transform GameUITr;
         [SerializeField] private GameObject flyingPointPrefab;
         [SerializeField] private Slider levelProgressionBar;
         [SerializeField] private Image nextLevelIndicatorImage;
         [SerializeField] private Image thisLevelIndicatorImage;
+        [SerializeField] private TextMeshProUGUI thisLevelIndicatorTMP;
+        [SerializeField] private TextMeshProUGUI nextLevelIndicatorTMP;
+        [SerializeField] private LevelEndUI levelEndUI;
 
         public void UpdatePlayerScoreText(int playerScore)
         {
@@ -54,7 +58,14 @@ namespace Managers
         public void Reset()
         {
             UpdatePlayerScoreText(0);
+            UpdateBestScoreText();
             levelProgressionBar.value = 0f;
+            nextLevelIndicatorImage.color = Color.white;
+        }
+
+        private void UpdateBestScoreText()
+        {
+            bestScoreTMP.text = "BEST: " + PlayerPrefs.GetInt("BestScore");
         }
 
         private IEnumerator LevelProgressCoroutine(float targetValue)
@@ -78,6 +89,27 @@ namespace Managers
             {
                 nextLevelIndicatorImage.color = thisLevelIndicatorImage.color;
             }
+        }
+
+        public void LevelFinished(bool won)
+        {
+            if (won)
+            {
+                CameraController.Instance.PlayConfettis();
+            }
+            
+            levelEndUI.ActivateLevelEndUI(won);
+        }
+
+        public int GetLevelCompletionPercentage()
+        {
+            return (int)(levelProgressionBar.value * 100f);
+        }
+
+        public void ChangeLevelIndicatorNumbers(int currentLevel)
+        {
+            thisLevelIndicatorTMP.text = currentLevel.ToString();
+            nextLevelIndicatorTMP.text = (currentLevel + 1).ToString();
         }
     }
 }

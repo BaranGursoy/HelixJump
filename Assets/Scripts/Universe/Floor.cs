@@ -95,6 +95,7 @@ public class Floor : MonoBehaviour
 
             chosenPlatform.ChangeTypeToObstacle();
             chosenPlatform.ChangeMaterial();
+            chosenPlatform.transform.tag = "Obstacle";
             obstacleCounter++;
 
             if (obstacleCounter >= randomCountForObstacle)
@@ -104,6 +105,17 @@ public class Floor : MonoBehaviour
         }
     }
 
+    public void ChangeObstaclesTags()
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            if (platformPiece.GetPlatformType() == PlatformPieceType.Obstacle)
+            {
+                platformPiece.transform.tag = "Obstacle";
+            }
+        }
+    }
+    
     public void ExplodeFloor()
     {
         foreach (var platformPiece in platformPieces)

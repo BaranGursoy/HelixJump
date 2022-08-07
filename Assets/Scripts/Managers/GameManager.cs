@@ -26,7 +26,7 @@ namespace Managers
         
         public int playerScore;
         public int bestScore;
-        public int levelId = 1;
+        private int levelId = 1;
 
         private CanvasManager canvasManager;
         private LevelManager levelManager;
@@ -58,12 +58,25 @@ namespace Managers
             canvasManager.UpdateLevelProgressionBar(currentFloorNumber, totalFloorNumber);
         }
 
-        private void LoadNextLevel()
+        public void LoadNextLevel()
         {
+            ResetAllLevelVariables();
+
+            bestScore = PlayerPrefs.GetInt("BestScore");
+
             if (lastCreatedLevel != null)
             {
                 Destroy(lastCreatedLevel);
             }
+
+            levelId = PlayerPrefs.GetInt("LevelId");
+
+            if (levelId == 0)
+            {
+                levelId = 1;
+            }
+            
+            canvasManager.ChangeLevelIndicatorNumbers(levelId);
             
             var levelPrefab = levelManager.GetNextLevel(levelId);
             lastCreatedLevel = Instantiate(levelPrefab);
@@ -72,7 +85,40 @@ namespace Managers
             cameraController.Initialize(levelDataHolder.ball);
             playerInputController.Initialize(levelDataHolder.mainPlatform.transform);
         }
+
+        public void IncreaseLevelId()
+        {
+            levelId++;
+            PlayerPrefs.SetInt("LevelId", levelId);
+        }
+        
+        private void ResetAllLevelVariables()
+        {
+            playerScore = 0;
+            canvasManager.Reset();
+            cameraController.Reset();
+            playerInputController.Reset();
+        }
+
+        public void GameFinished(bool won)
+        {
+            playerInputController.LevelCompleted();
+            canvasManager.LevelFinished(won);
+
+            if (won)
+            {
+                SaveBestScore();
+            }
+        }
+
+        private void SaveBestScore()
+        {
+            if (playerScore > bestScore)
+            {
+                bestScore = playerScore;
+                PlayerPrefs.SetInt("BestScore", bestScore);
+            }
+        }
     }
-    
     
 }

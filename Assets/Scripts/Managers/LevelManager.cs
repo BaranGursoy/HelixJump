@@ -40,7 +40,7 @@ public class LevelManager : MonoBehaviour
             actualLevelIndex = levelId - 1;
         }
         
-        Debug.Log(actualLevelIndex);
+        Debug.Log(actualLevelIndex); // FIXME delete this
         
         return levels[actualLevelIndex];
     }

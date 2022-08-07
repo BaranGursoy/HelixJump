@@ -30,8 +30,6 @@ using UnityEngine;
 
         private Vector2 lastMousePos;
 
-        [HideInInspector] public bool allowInput = true;
-
         private Transform platformTr;
         
         // Properties
@@ -61,6 +59,11 @@ using UnityEngine;
             SetPlaying(false);
         }
 
+        public bool GetPlaying()
+        {
+            return playing;
+        }
+
 
         public void SetPlaying(bool value)
         {
@@ -70,12 +73,17 @@ using UnityEngine;
 
         private void Update()
         {
-            if (!allowInput)
+            if (!playing)
             {
                 return;
             }
 
             HandleInput();
+        }
+
+        public void Reset()
+        {
+            LevelStarted();
         }
 
         #endregion

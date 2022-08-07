@@ -30,7 +30,7 @@ public class MainPlatform : MonoBehaviour
     }
 #if UNITY_EDITOR
     [Button(ButtonSizes.Large), GUIColor(0f,1f,0f)]
-    public void CreateRandomLevel() //FIXME Sonradan katlari da yarat ve belirli araliklar ver y'de
+    public void CreateRandomLevel()
     {
         foreach (var floor in floors)
         {
@@ -69,6 +69,7 @@ public class MainPlatform : MonoBehaviour
             floors[i].RandomlyCreatePlatformPiece();
         }
     }
+    
 
     [Button(ButtonSizes.Large), GUIColor(1f, 0f, 0f)]
     public void DeleteLevel()
@@ -87,6 +88,15 @@ public class MainPlatform : MonoBehaviour
         foreach (var floor in floors)
         {
             floor.UpdatePlatformPieces();
+        }
+    }
+
+    [Button(ButtonSizes.Large)]
+    public void ChangeObstacleTags()
+    {
+        foreach (var floor in floors)
+        {
+            floor.ChangeObstaclesTags();
         }
     }
     

@@ -32,6 +32,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smoothTime = 0.3F;
     private Vector3 velocity = Vector3.zero;
 
+    [SerializeField] private GameObject confettiRightObj;
+    [SerializeField] private GameObject confettiLeftObj;
+
 
     private Transform ballTr;
     
@@ -49,7 +52,7 @@ public class CameraController : MonoBehaviour
         offset = mainCameraTr.position - ballTr.position;
     }
     
-    private void LateUpdate() // FIXME hala durdugu yerde biraz oynuyor kamera bunu da coz
+    private void LateUpdate()
     {
         if (ball.passedCurrentFloor)
         {
@@ -63,5 +66,26 @@ public class CameraController : MonoBehaviour
             targetPos = ballTr.position + offset;
             mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
         }
+    }
+
+    public void PlayConfettis()
+    {
+        confettiLeftObj.SetActive(true);
+        confettiRightObj.SetActive(true);
+    }
+
+    private void CloseConfettis()
+    {
+        confettiLeftObj.SetActive(false);
+        confettiRightObj.SetActive(false);
+    }
+
+    public void Reset()
+    {
+        var pos = mainCameraTr.position;
+        pos.y = Constants.FirstYPosCamera;
+        mainCameraTr.position = pos;
+
+        CloseConfettis();
     }
 }

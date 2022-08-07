@@ -58,6 +58,17 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.transform.CompareTag("Finish"))
+        {
+            GameManager.Instance.GameFinished(true);
+        }
+        
+        if (collision.transform.CompareTag("Obstacle"))
+        {
+            GameManager.Instance.GameFinished(false);
+            return;
+        }
+        
         if (collision.transform.CompareTag("PlatformPiece"))
         {
             var floorTr = collision.transform.parent;
@@ -88,6 +99,11 @@ public class Ball : MonoBehaviour
 
     private void Bounce()
     {
+        if (!PlayerInputController.Instance.GetPlaying())
+        {
+            return;
+        }
+        
         isJumping = true;
         
         splashParticle.Play();

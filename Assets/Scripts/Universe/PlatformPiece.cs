@@ -56,6 +56,11 @@ public class PlatformPiece : MonoBehaviour
         platformPieceType = PlatformPieceType.Normal;
     }
 
+    public PlatformPieceType GetPlatformType()
+    {
+        return platformPieceType;
+    }
+
     public void ExplodePiece()
     {
         if (platformPieceType == PlatformPieceType.Normal)
