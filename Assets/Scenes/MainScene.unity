@@ -366,7 +366,7 @@ MonoBehaviour:
   - tag: PaintSplash
     prefab: {fileID: 7466949553068680389, guid: c5758504020744d76bb16cdca6e53091,
       type: 3}
-    poolSize: 100
+    poolSize: 300
   - tag: FlyingPointText
     prefab: {fileID: 5716792385229702283, guid: 4a064b572d332418fbf6d14aa6d1f83f,
       type: 3}
@@ -534,6 +534,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6984474020303063730, guid: 107adef50541b4043b2e2dfeea155607,
         type: 3}
+      propertyPath: offset.z
+      value: -3.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984474020303063730, guid: 107adef50541b4043b2e2dfeea155607,
+        type: 3}
       propertyPath: postProcessVolume
       value: 
       objectReference: {fileID: 725517056}
@@ -596,6 +601,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CameraController
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984474020540451662, guid: 107adef50541b4043b2e2dfeea155607,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.603913
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 107adef50541b4043b2e2dfeea155607, type: 3}

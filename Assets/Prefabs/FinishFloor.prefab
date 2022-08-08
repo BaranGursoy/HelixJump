@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1699124089237880806}
   m_Layer: 0
   m_Name: FinishFloor
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 5113298830978479969}
   - {fileID: 5113298832608339432}
   - {fileID: 5113298832890043629}
+  disabledPieces: []
 --- !u!1001 &953057576661282650
 PrefabInstance:
   m_ObjectHideFlags: 0

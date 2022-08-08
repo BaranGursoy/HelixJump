@@ -116,9 +116,19 @@ public class MainPlatform : MonoBehaviour
     {
         if (ballPos.y < currentFloor.transform.position.y - floorPassOffset)
         {
+            
             if (ball.IsBoostModeActive())
             {
-                currentFloor.ExplodeFloor(ball.GetBoostMaterial());
+                if (currentFloor.CompareTag("Finish"))
+                {
+                    ball.DeactivateBoostMode();
+                }
+
+                else
+                { 
+                    currentFloor.ExplodeFloor(ball.GetBoostMaterial());
+                }
+               
             }
 
             else if (!currentFloor.HasFloorExploded())

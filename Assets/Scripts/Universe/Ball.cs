@@ -303,7 +303,7 @@ public class Ball : MonoBehaviour
         DeactivateBoostMode();
     }
 
-    private void DeactivateBoostMode()
+    public void DeactivateBoostMode()
     {
         if (!boostModeActive)
         {

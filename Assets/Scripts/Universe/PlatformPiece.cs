@@ -160,7 +160,7 @@ public class PlatformPiece : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if (!child.CompareTag("Boost") && !child.CompareTag("PlatformPiece"))
+            if (!child.CompareTag("Boost") && !child.CompareTag("PlatformPiece") && !child.CompareTag("Obstacle"))
             {
                 child.gameObject.SetActive(false);
 
