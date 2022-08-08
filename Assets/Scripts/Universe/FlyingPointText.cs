@@ -12,8 +12,8 @@ public class FlyingPointText : MonoBehaviour
         pointTMP.text = "+" + point;
     }
     
-    public void DestroyTextObj()
+    public void HideTextObj()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

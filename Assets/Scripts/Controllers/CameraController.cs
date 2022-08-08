@@ -220,6 +220,12 @@ public class CameraController : MonoBehaviour
         pos.y = Constants.FirstYPosCamera;
         mainCameraTr.position = pos;
 
+        postProcessVolume.profile.TryGetSettings(out vignette);
+        vignette.intensity.value = 0f;
+        
+        mainCamera = Camera.main;
+        mainCamera.fieldOfView = fovStartValue;
+
         CloseConfettis();
     }
 }

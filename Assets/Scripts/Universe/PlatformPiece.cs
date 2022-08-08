@@ -132,4 +132,16 @@ public class PlatformPiece : MonoBehaviour
             collider.isTrigger = true;
         }
     }
+
+    private void OnDestroy()
+    {
+        foreach (Transform child in transform)
+        {
+            if (!child.CompareTag("Boost") && !child.CompareTag("PlatformPiece"))
+            {
+                child.gameObject.SetActive(false);
+                child.gameObject.transform.SetParent(ObjectPooler.Instance.transform);
+            }
+        }
+    }
 }
