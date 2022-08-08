@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlatformPiece : MonoBehaviour
 {
@@ -16,10 +17,32 @@ public class PlatformPiece : MonoBehaviour
     [SerializeField] private List<Collider> colliders;
     [SerializeField] private float explosionForce;
     [SerializeField] private float requiredTimeForFadeOut = 1f;
+    [SerializeField] private GameObject boostObj;
+    [SerializeField] private GameObject verticleObstacleObj;
 
-    public bool isPieceOfCompoundBlock;
+    public bool isFirstPiece;
 
     private List<PlatformPiece> neighbors = new List<PlatformPiece>();
+    
+    public void AdjustBoostsAndVerticalObstacles()
+    {
+        if (CompareTag("Finish"))
+        {
+            return;
+        }
+        
+        var randomNumber = Random.Range(0, 50);
+
+        if (randomNumber == 15)
+        {
+            boostObj.SetActive(true);
+        }
+
+        if (randomNumber == 0)
+        {
+            verticleObstacleObj.SetActive(true);
+        }
+    }
 
 
     /*public void SearchNeighbor(ref List<PlatformPiece> platformPieces)
@@ -140,7 +163,11 @@ public class PlatformPiece : MonoBehaviour
             if (!child.CompareTag("Boost") && !child.CompareTag("PlatformPiece"))
             {
                 child.gameObject.SetActive(false);
-                child.gameObject.transform.SetParent(ObjectPooler.Instance.transform);
+
+                if (ObjectPooler.Instance)
+                {
+                    child.gameObject.transform.SetParent(ObjectPooler.Instance.transform);
+                }
             }
         }
     }

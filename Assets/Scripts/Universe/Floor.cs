@@ -40,6 +40,14 @@ public class Floor : MonoBehaviour
         }
     }
 
+    public void RandomlyGenerateBoostsAndVerticalObstacles()
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            platformPiece.AdjustBoostsAndVerticalObstacles();
+        }
+    }
+
     private void ResetFloor()
     {
         foreach (Transform childTr in transform)
@@ -148,7 +156,10 @@ public class Floor : MonoBehaviour
         SetHasExploded();
         foreach (var platformPiece in platformPieces)
         {
-            platformPiece.ExplodePiece(material);
+            if (platformPiece.gameObject.activeInHierarchy)
+            {
+                platformPiece.ExplodePiece(material);
+            }
         }
     }
 

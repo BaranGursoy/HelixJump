@@ -15,7 +15,7 @@ public class MainPlatform : MonoBehaviour
     [SerializeField] private float floorsYDelta = 0.3f;
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private GameObject finishPrefab;
-    
+
     [SerializeField] private Ball ball;
 
     private int floorCount;
@@ -31,18 +31,18 @@ public class MainPlatform : MonoBehaviour
         currentFloor = floors[currentFloorNumber];
     }
 #if UNITY_EDITOR
-    [Button(ButtonSizes.Large), GUIColor(0f,1f,0f)]
+    [Button(ButtonSizes.Large), GUIColor(0f, 1f, 0f)]
     public void CreateRandomLevel()
     {
         foreach (var floor in floors)
         {
             DestroyImmediate(floor.gameObject);
         }
-        
+
         floors.Clear();
-        
+
         float lastY = Constants.FirstFloorYPos;
-        
+
         for (int i = 0; i < wantedFloorNumber; i++)
         {
             var pos = Vector3.zero;
@@ -54,10 +54,10 @@ public class MainPlatform : MonoBehaviour
             createdFloor.transform.position = pos;
 
             lastY -= floorsYDelta;
-            
+
             floors.Add(createdFloor);
         }
-        
+
         var finishPos = Vector3.zero;
         finishPos.y = lastY;
         var finishFloorObj = PrefabUtility.InstantiatePrefab(finishPrefab) as GameObject;
@@ -66,12 +66,12 @@ public class MainPlatform : MonoBehaviour
         finishFloor.transform.position = finishPos;
         floors.Add(finishFloor);
 
-        for(int i=1; i<floors.Count - 1; i++)
+        for (int i = 1; i < floors.Count - 1; i++)
         {
             floors[i].RandomlyCreatePlatformPiece();
         }
     }
-    
+
 
     [Button(ButtonSizes.Large), GUIColor(1f, 0f, 0f)]
     public void DeleteLevel()
@@ -80,7 +80,7 @@ public class MainPlatform : MonoBehaviour
         {
             DestroyImmediate(floor.gameObject);
         }
-        
+
         floors.Clear();
     }
 
@@ -101,7 +101,16 @@ public class MainPlatform : MonoBehaviour
             floor.ChangeObstaclesTags();
         }
     }
-    
+
+    [Button(ButtonSizes.Large)]
+    public void RandomlyGenerateBoostsAndVerticalObstacles()
+    {
+        foreach (var floor in floors)
+        {
+            floor.RandomlyGenerateBoostsAndVerticalObstacles();
+        }
+    }
+
 #endif
     public void CheckForFloorNumber(Vector3 ballPos)
     {

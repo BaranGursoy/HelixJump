@@ -795,5 +795,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: '@Managers'
       objectReference: {fileID: 0}
+    - target: {fileID: 8947160646847235374, guid: 775e5f36e042a4bddae2662aa5ecea92,
+        type: 3}
+      propertyPath: levels.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947160646847235374, guid: 775e5f36e042a4bddae2662aa5ecea92,
+        type: 3}
+      propertyPath: levels.Array.data[0]
+      value: 
+      objectReference: {fileID: 7204624083319238497, guid: 4f478a3f5a24f4092b9f5bd780155d74,
+        type: 3}
+    - target: {fileID: 8947160646847235374, guid: 775e5f36e042a4bddae2662aa5ecea92,
+        type: 3}
+      propertyPath: levels.Array.data[1]
+      value: 
+      objectReference: {fileID: 7204624083319238497, guid: e4d6e140838014765b2d0a26030ec7c8,
+        type: 3}
+    - target: {fileID: 8947160646847235374, guid: 775e5f36e042a4bddae2662aa5ecea92,
+        type: 3}
+      propertyPath: levels.Array.data[2]
+      value: 
+      objectReference: {fileID: 7204624083319238497, guid: 68b4f29d554ed407db436fa5288f165e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 775e5f36e042a4bddae2662aa5ecea92, type: 3}
