@@ -140,7 +140,11 @@ public class PlatformPiece : MonoBehaviour
             if (!child.CompareTag("Boost") && !child.CompareTag("PlatformPiece"))
             {
                 child.gameObject.SetActive(false);
-                child.gameObject.transform.SetParent(ObjectPooler.Instance.transform);
+
+                if (ObjectPooler.Instance)
+                {
+                    child.gameObject.transform.SetParent(ObjectPooler.Instance.transform);
+                }
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -29,7 +30,58 @@ public class MainPlatform : MonoBehaviour
         floorCount = floors.Count;
         ball.Initialize(floors[currentFloorNumber], floorCount);
         currentFloor = floors[currentFloorNumber];
+
+        if (!GameManager.Instance.isLevelPlayedBefore)
+        {
+            CreateRandomLevel();
+        }
     }
+    
+    /*
+    public void CreateRandomLevel()
+    {
+        for (int i = 1; i < floors.Count; i++)
+        {
+            Destroy(floors[i].gameObject);
+        }
+
+        var firstFloor = floors[0];
+        
+        floors.Clear();
+        
+        floors.Add(firstFloor);
+        
+        float lastY = Constants.FirstFloorYPos - floorsYDelta;
+        
+        for (int i = 0; i < wantedFloorNumber; i++)
+        {
+            var pos = Vector3.zero;
+            pos.y = lastY;
+
+            var createdFloorObj = Instantiate(floorPrefab, transform, true);
+            var createdFloor = createdFloorObj.GetComponent<Floor>();
+            createdFloor.transform.position = pos;
+
+            lastY -= floorsYDelta;
+            
+            floors.Add(createdFloor);
+        }
+        
+        var finishPos = Vector3.zero;
+        finishPos.y = lastY;
+        var finishFloorObj = PrefabUtility.InstantiatePrefab(finishPrefab) as GameObject;
+        finishFloorObj.transform.SetParent(transform);
+        var finishFloor = finishFloorObj.GetComponent<Floor>();
+        finishFloor.transform.position = finishPos;
+        floors.Add(finishFloor);
+
+        for(int i=1; i<floors.Count - 1; i++)
+        {
+            floors[i].RandomlyCreatePlatformPiece();
+        }
+    }
+    */
+    
 #if UNITY_EDITOR
     [Button(ButtonSizes.Large), GUIColor(0f,1f,0f)]
     public void CreateRandomLevel()

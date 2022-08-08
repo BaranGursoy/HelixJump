@@ -26,6 +26,7 @@ namespace Managers
         
         public int playerScore;
         public int bestScore;
+        [HideInInspector] public bool isLevelPlayedBefore;
         private int levelId = 1;
 
         private CanvasManager canvasManager;
@@ -34,6 +35,8 @@ namespace Managers
         private PlayerController playerController;
 
         private GameObject lastCreatedLevel;
+
+        private MainPlatform lastMainPlatform;
 
         private void Start()
         {
@@ -86,6 +89,13 @@ namespace Managers
             var levelPrefab = levelManager.GetNextLevel(levelId);
             lastCreatedLevel = Instantiate(levelPrefab);
             var levelDataHolder = lastCreatedLevel.GetComponent<LevelDataHolder>();
+
+            /*if (isLevelPlayedBefore)
+            {
+                levelDataHolder.AdjustMainPlatformManually(lastMainPlatform);
+            }
+
+            lastMainPlatform = levelDataHolder.mainPlatform;*/
 
             cameraController.Initialize(levelDataHolder.ball);
             playerController.Initialize(levelDataHolder.mainPlatform.transform);

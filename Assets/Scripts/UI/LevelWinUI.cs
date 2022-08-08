@@ -10,6 +10,7 @@ public class LevelWinUI : MonoBehaviour
         GameManager.Instance.IncreaseLevelId();
         GameManager.Instance.LoadNextLevel();
         CameraController.Instance.RandomizeColorsWithHue();
+        GameManager.Instance.isLevelPlayedBefore = true;
         gameObject.SetActive(false);
     }
 }

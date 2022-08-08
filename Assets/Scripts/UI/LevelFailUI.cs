@@ -17,6 +17,7 @@ public class LevelFailUI : MonoBehaviour
 
     public void RestartLevel()
     {
+        GameManager.Instance.isLevelPlayedBefore = true;
         GameManager.Instance.LoadNextLevel();
         gameObject.SetActive(false);
     }
