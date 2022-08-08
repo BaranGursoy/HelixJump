@@ -154,6 +154,11 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public bool CheckForShouldCameraFollow()
+    {
+        return !(lastCollidedFloorTr == currentFloorTr);
+    }
+
     private void Bounce()
     {
         if (!PlayerController.Instance.GetPlaying())
@@ -242,7 +247,9 @@ public class Ball : MonoBehaviour
         feverModeActive = true;
         ChangeMaterialsForFeverMode();
         feverModeParticleObj.SetActive(true);
+        
         CameraController.Instance.ActivateVignette(feverModeMat);
+        CameraController.Instance.IncreaseFov();
     }
 
     private void DeactivateFeverMode()
@@ -255,7 +262,9 @@ public class Ball : MonoBehaviour
         feverModeActive = false;
         ChangeMaterialsToOriginal();
         feverModeParticleObj.SetActive(false);
+        
         CameraController.Instance.DeactivateVignette();
+        CameraController.Instance.ResetFov();
     }
 
     private void ChangeMaterialsForFeverMode()
@@ -277,7 +286,9 @@ public class Ball : MonoBehaviour
         ChangeMaterialsForFeverMode();
         mainPlatform.ChangeAllFloorMaterials(feverModeMat);
         StartCoroutine(BoostModeCor());
+        
         CameraController.Instance.ActivateVignette(feverModeMat);
+        CameraController.Instance.IncreaseFov();
     }
 
     private IEnumerator BoostModeCor() // FIXME belki kat sayisina gore yapilabilir
@@ -301,6 +312,8 @@ public class Ball : MonoBehaviour
         {
             BounceAfterFeverAndBoost();
         }
+        
         CameraController.Instance.DeactivateVignette();
+        CameraController.Instance.ResetFov();
     }
 }

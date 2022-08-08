@@ -31,7 +31,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform mainCameraTr;
     [SerializeField] private Vector3 offset;
     
-    [SerializeField] private float smoothTime = 0.3F;
+    [SerializeField] private float smoothSpeed = 10f;
+    [SerializeField] private float boostFovValue = 55f;
     private Vector3 velocity = Vector3.zero;
 
     [SerializeField] private GameObject confettiRightObj;
@@ -41,12 +42,16 @@ public class CameraController : MonoBehaviour
     private ColorGrading colorGrading;
 
     private Coroutine lastVignetteCoroutine;
+    private Coroutine lastFovCoroutine;
+    private Camera mainCamera;
 
 
     private Transform ballTr;
     
     private Vector3 targetPos;
     private Vignette vignette;
+
+    private readonly float fovStartValue = 60f;
 
     public void Initialize(Ball ball)
     {
@@ -56,7 +61,62 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        mainCamera = Camera.main;
         postProcessVolume.profile.TryGetSettings(out vignette);
+    }
+
+    public void IncreaseFov()
+    {
+        if (lastFovCoroutine != null)
+        {
+            StopCoroutine(lastFovCoroutine);
+        }
+
+        lastFovCoroutine = StartCoroutine(IncreaseFovCor());
+    }
+
+    public void ResetFov()
+    {
+        if (lastFovCoroutine != null)
+        {
+            StopCoroutine(lastFovCoroutine);
+        }
+
+        lastFovCoroutine = StartCoroutine(ResetFovCor());
+    }
+
+    private IEnumerator IncreaseFovCor()
+    {
+        var requiredTime = 0.5f;
+        var passedTime = 0f;
+
+        var startValue = mainCamera.fieldOfView;
+
+        while (passedTime < requiredTime)
+        {
+            mainCamera.fieldOfView = Mathf.Lerp(startValue, boostFovValue, passedTime / requiredTime);
+            passedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        mainCamera.fieldOfView = boostFovValue;
+    }
+    
+    private IEnumerator ResetFovCor()
+    {
+        var requiredTime = 0.25f;
+        var passedTime = 0f;
+
+        var startValue = mainCamera.fieldOfView;
+
+        while (passedTime < requiredTime)
+        {
+            mainCamera.fieldOfView = Mathf.Lerp(startValue, fovStartValue, passedTime / requiredTime);
+            passedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        mainCamera.fieldOfView = fovStartValue;
     }
 
     public void RandomizeColorsWithHue()
@@ -121,15 +181,25 @@ public class CameraController : MonoBehaviour
         if (ball.passedCurrentFloor)
         {
             targetPos = ballTr.position + offset;
-            mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
+            //mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
+            var smoothedPos = Vector3.Lerp(mainCameraTr.position, targetPos, smoothSpeed * Time.deltaTime);
+            mainCameraTr.position = smoothedPos;
         }
 
 
         else if(Mathf.Abs(mainCameraTr.position.y - targetPos.y) > 0.1f && ball.currentFloorTr != null)
         {
             targetPos = ballTr.position + offset;
-            mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
+            //mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, smoothTime);
+            var smoothedPos = Vector3.Lerp(mainCameraTr.position, targetPos, smoothSpeed * Time.deltaTime);
+            mainCameraTr.position = smoothedPos;
         }
+
+        /*if (ball.CheckForShouldCameraFollow())
+        {
+            targetPos = ballTr.position + offset;
+            mainCameraTr.position = Vector3.SmoothDamp(mainCameraTr.position, targetPos, ref velocity, 0.1f);
+        }*/
     }
 
     public void PlayConfettis()

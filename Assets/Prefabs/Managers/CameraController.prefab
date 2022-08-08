@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCameraTr: {fileID: 6984474020540451662}
   offset: {x: 0, y: 1.2140002, z: -4.921}
-  smoothTime: 0.3
+  smoothSpeed: 7
+  boostFovValue: 52
   confettiRightObj: {fileID: 6983681263666990222}
   confettiLeftObj: {fileID: 6983681262935878871}
   postProcessVolume: {fileID: 0}
