@@ -39,9 +39,13 @@ public class Ball : MonoBehaviour
 
     private float collisionBugTimer;
 
+    private ObjectPooler objectPooler;
+
     private void Start()
     {
         gameManager = GameManager.Instance;
+        objectPooler = ObjectPooler.Instance;
+
         baseGainedPoint = gameManager.GetLevelId();
         originalMat = ballMeshRenderer.sharedMaterial;
         SetColorsOfBallParticles();
@@ -199,7 +203,7 @@ public class Ball : MonoBehaviour
 
     private void CreatePaintSplash(Transform parentTr, Vector3 spawnPos)
     {
-        var splashObj = Instantiate(splashSpritePrefab, spawnPos, Quaternion.Euler(90f, 0f, 0f));
+        var splashObj = objectPooler.SpawnFromPool("PaintSplash", spawnPos, Quaternion.Euler(90f, 0f, 0f));
         
         var splashSpriteRenderer = splashObj.GetComponent<SpriteRenderer>();
         splashSpriteRenderer.color = ballMeshRenderer.material.color;

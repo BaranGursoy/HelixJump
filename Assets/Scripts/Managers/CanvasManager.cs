@@ -38,6 +38,13 @@ namespace Managers
         [SerializeField] private TextMeshProUGUI nextLevelIndicatorTMP;
         [SerializeField] private LevelEndUI levelEndUI;
 
+        private ObjectPooler objectPooler;
+
+        private void Start()
+        {
+            objectPooler = ObjectPooler.Instance;
+        }
+
         public void UpdatePlayerScoreText(int playerScore)
         {
             playerScoreTMP.text = playerScore.ToString();
@@ -45,7 +52,8 @@ namespace Managers
 
         public void CreateFlyingPointForUI(int point)
         {
-            var flyingPoint = Instantiate(flyingPointPrefab, GameUITr).GetComponent<FlyingPointText>();
+            var flyingPoint = objectPooler.SpawnFromPool("FlyingPointText", Vector3.zero, Quaternion.identity).GetComponent<FlyingPointText>();
+            flyingPoint.transform.SetParent(GameUITr);
             flyingPoint.SetPointText(point);
         }
 
