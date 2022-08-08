@@ -247,7 +247,7 @@ public class Ball : MonoBehaviour
         feverModeActive = true;
         ChangeMaterialsForFeverMode();
         feverModeParticleObj.SetActive(true);
-        
+
         CameraController.Instance.ActivateVignette(feverModeMat);
         CameraController.Instance.IncreaseFov();
     }
@@ -287,6 +287,8 @@ public class Ball : MonoBehaviour
         mainPlatform.ChangeAllFloorMaterials(feverModeMat);
         StartCoroutine(BoostModeCor());
         
+        mainPlatform.ChangeFloorPassOffset(-1f);
+        
         CameraController.Instance.ActivateVignette(feverModeMat);
         CameraController.Instance.IncreaseFov();
     }
@@ -308,10 +310,13 @@ public class Ball : MonoBehaviour
         ballCollider.isTrigger = false;
         ChangeMaterialsToOriginal();
         mainPlatform.ChangeAllFloorMaterialsToOriginal();
+        
         if (!isJumping)
         {
             BounceAfterFeverAndBoost();
         }
+        
+        mainPlatform.ResetFloorPassOffset();
         
         CameraController.Instance.DeactivateVignette();
         CameraController.Instance.ResetFov();

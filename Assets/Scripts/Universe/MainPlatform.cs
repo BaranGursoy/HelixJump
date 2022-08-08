@@ -21,9 +21,11 @@ public class MainPlatform : MonoBehaviour
     private int floorCount;
     private int currentFloorNumber;
     private Floor currentFloor;
+    private float originalFloorPassOffset;
 
     private void Start()
     {
+        originalFloorPassOffset = floorPassOffset;
         floorCount = floors.Count;
         ball.Initialize(floors[currentFloorNumber], floorCount);
         currentFloor = floors[currentFloorNumber];
@@ -140,6 +142,16 @@ public class MainPlatform : MonoBehaviour
         {
             floor.ChangeFloorMaterialsToOriginal();
         }
+    }
+
+    public void ChangeFloorPassOffset(float newOffset)
+    {
+        floorPassOffset = newOffset;
+    }
+
+    public void ResetFloorPassOffset()
+    {
+        floorPassOffset = originalFloorPassOffset;
     }
     
 }
