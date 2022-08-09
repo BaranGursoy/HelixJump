@@ -100,6 +100,12 @@ public class Ball : MonoBehaviour
             ExplodeFloorWithFeverMode(collision);
            
         }
+
+        if (collision.transform.CompareTag("Breakable"))
+        {
+            var platformPiece = collision.transform.GetComponent<PlatformPiece>();
+            platformPiece.BreakableExplode();
+        }
         
         if (collision.transform.CompareTag("PlatformPiece"))
         {

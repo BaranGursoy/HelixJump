@@ -11,18 +11,16 @@ public class PlatformPiece : MonoBehaviour
     [SerializeField] private PlatformPieceType platformPieceType;
     [SerializeField] private Material normalMat;
     [SerializeField] private Material normalTransparentMat;
+    [SerializeField] private Material breakableMat;
     [SerializeField] private Material obstacleMat;
     [SerializeField] private Material obstacleTransparentMat;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private List<Collider> colliders;
+    [SerializeField] private Collider collider;
     [SerializeField] private float explosionForce;
     [SerializeField] private float requiredTimeForFadeOut = 1f;
     [SerializeField] private GameObject boostObj;
     [SerializeField] private GameObject verticleObstacleObj;
-
-    public bool isFirstPiece;
-
-    private List<PlatformPiece> neighbors = new List<PlatformPiece>();
+    [SerializeField] private GameObject breakableObj;
     
     public void AdjustBoostsAndVerticalObstacles()
     {
@@ -57,6 +55,8 @@ public class PlatformPiece : MonoBehaviour
         }
     }*/
     
+    //FIXME butonla direkt platformu ayarlayabildigimiz platforma ozel bir editor scripti yaz
+    
     public void ChangeMaterial()
     {
         if (meshRenderer == null)
@@ -75,6 +75,11 @@ public class PlatformPiece : MonoBehaviour
         if(platformPieceType == PlatformPieceType.Obstacle)
         {
             meshRenderer.material = obstacleMat;
+        }
+
+        if (platformPieceType == PlatformPieceType.Breakable)
+        {
+            meshRenderer.material = breakableMat;
         }
     }
     
@@ -95,10 +100,31 @@ public class PlatformPiece : MonoBehaviour
     {
         platformPieceType = PlatformPieceType.Normal;
     }
+    
+    public void ChangeTypeToBreakable()
+    {
+        platformPieceType = PlatformPieceType.Breakable;
+    }
 
     public PlatformPieceType GetPlatformType()
     {
         return platformPieceType;
+    }
+    
+    public void BreakableExplode()
+    {
+        meshRenderer.enabled = false;
+        breakableObj.SetActive(true);
+        
+        rb.isKinematic = false;
+
+        CloseCollider();
+        
+        transform.SetParent(null);
+        
+        var force = (-transform.up + transform.right) * explosionForce * 1.5f;
+        rb.AddForce(force, ForceMode.Impulse);
+        StartCoroutine(MakeExplodedPieceTransparentCor()); 
     }
 
     public void ExplodePiece(Material material)
@@ -120,7 +146,7 @@ public class PlatformPiece : MonoBehaviour
         
         rb.isKinematic = false;
 
-        CloseColliders();
+        CloseCollider();
         
         transform.SetParent(null);
         
@@ -148,12 +174,9 @@ public class PlatformPiece : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void CloseColliders()
+    private void CloseCollider()
     {
-        foreach (var collider in colliders)
-        {
-            collider.isTrigger = true;
-        }
+        collider.isTrigger = true;
     }
 
     private void OnDestroy()

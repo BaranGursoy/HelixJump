@@ -110,7 +110,6 @@ public class Floor : MonoBehaviour
         }
 
         closedPlatformPieces.Clear();
-        closedPlatformPieces = null;
 
         int randomCountForObstacle = Random.Range(0, 3);
         int obstacleCounter = 0;
@@ -138,6 +137,33 @@ public class Floor : MonoBehaviour
                 break;
             }
         }
+        
+        int randomCountForBrekable = Random.Range(0, 2);
+        int breakableCounter = 0;
+        
+        
+        List<PlatformPiece> breakablePlatformPieces = new List<PlatformPiece>();
+
+        while (true)
+        {
+            int index = Random.Range(0, platformPieces.Count);
+            var chosenPlatform = platformPieces[index];
+
+            if (breakablePlatformPieces.Contains(chosenPlatform))
+            {
+                continue;
+            }
+
+            chosenPlatform.ChangeTypeToBreakable();
+            chosenPlatform.ChangeMaterial();
+            chosenPlatform.transform.tag = "Breakable";
+            breakableCounter++;
+
+            if (breakableCounter >= randomCountForBrekable)
+            {
+                break;
+            }
+        }
     }
 
     public void ChangeObstaclesTags()
@@ -156,7 +182,7 @@ public class Floor : MonoBehaviour
         SetHasExploded();
         foreach (var platformPiece in platformPieces)
         {
-            if (platformPiece.gameObject.activeInHierarchy)
+            if (platformPiece != null && platformPiece.gameObject.activeInHierarchy)
             {
                 platformPiece.ExplodePiece(material);
             }

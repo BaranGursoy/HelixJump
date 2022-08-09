@@ -5,5 +5,6 @@ using UnityEngine;
 public enum PlatformPieceType 
 {
     Normal,
-    Obstacle
+    Obstacle,
+    Breakable
 }
