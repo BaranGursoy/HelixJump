@@ -109,6 +109,9 @@ public class Ball : MonoBehaviour
             
             var floorTr = collision.transform.parent;
 
+            var platformPiece = collision.transform.GetComponent<PlatformPiece>();
+            platformPiece.GetHitByBall();
+
             if (feverModeActive)
             {
                 ExplodeFloorWithFeverMode(collision);
@@ -161,7 +164,7 @@ public class Ball : MonoBehaviour
     public bool CheckForShouldCameraFollow()
     {
         return !(lastCollidedFloorTr == currentFloorTr);
-    }
+    } // FIXME delete later
 
     private void Bounce()
     {

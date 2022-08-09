@@ -14,11 +14,16 @@ public class PlatformPiece : MonoBehaviour
     [SerializeField] private Material obstacleMat;
     [SerializeField] private Material obstacleTransparentMat;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private List<Collider> colliders;
+    [SerializeField] private Collider collider;
     [SerializeField] private float explosionForce;
     [SerializeField] private float requiredTimeForFadeOut = 1f;
     [SerializeField] private GameObject boostObj;
     [SerializeField] private GameObject verticleObstacleObj;
+
+    [SerializeField] private Material levelTwoBrokenMat;
+    [SerializeField] private Material levelThreeBrokenMat;
+    
+    private int howManyHitLeft = 3;
 
     public bool isFirstPiece;
 
@@ -56,7 +61,36 @@ public class PlatformPiece : MonoBehaviour
             }
         }
     }*/
-    
+
+    public void GetHitByBall()
+    {
+        if (howManyHitLeft <= 0 || CompareTag("Finish") || CompareTag("Obstacle"))
+        {
+            return;
+        }
+
+        howManyHitLeft--;
+
+        ChangeMatForGettingHit();
+
+        if (howManyHitLeft <= 0)
+        {
+            ExplodePieceWithoutMaterialChange();
+        }
+    }
+
+    private void ChangeMatForGettingHit()
+    {
+        switch (howManyHitLeft)
+        {
+            case 2:
+                meshRenderer.material = levelTwoBrokenMat;
+                break;
+            case 1: meshRenderer.material = levelThreeBrokenMat;
+                break;
+        }
+    }
+
     public void ChangeMaterial()
     {
         if (meshRenderer == null)
@@ -120,11 +154,24 @@ public class PlatformPiece : MonoBehaviour
         
         rb.isKinematic = false;
 
-        CloseColliders();
+        CloseCollider();
         
         transform.SetParent(null);
         
         var force = transform.right * explosionForce;
+        rb.AddForce(force, ForceMode.Impulse);
+        StartCoroutine(MakeExplodedPieceTransparentCor());
+    }
+    
+    public void ExplodePieceWithoutMaterialChange()
+    {
+        rb.isKinematic = false;
+
+        CloseCollider();
+        
+        transform.SetParent(null);
+        
+        var force = (-transform.up + transform.right) * explosionForce;
         rb.AddForce(force, ForceMode.Impulse);
         StartCoroutine(MakeExplodedPieceTransparentCor());
     }
@@ -148,12 +195,9 @@ public class PlatformPiece : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void CloseColliders()
+    private void CloseCollider()
     {
-        foreach (var collider in colliders)
-        {
-            collider.isTrigger = true;
-        }
+        collider.isTrigger = true;
     }
 
     private void OnDestroy()

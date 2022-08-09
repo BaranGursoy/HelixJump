@@ -156,7 +156,7 @@ public class Floor : MonoBehaviour
         SetHasExploded();
         foreach (var platformPiece in platformPieces)
         {
-            if (platformPiece.gameObject.activeInHierarchy)
+            if (platformPiece != null && platformPiece.gameObject.activeInHierarchy)
             {
                 platformPiece.ExplodePiece(material);
             }
