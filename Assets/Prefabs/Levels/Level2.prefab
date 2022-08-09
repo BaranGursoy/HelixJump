@@ -594,6 +594,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c4ad1aa45d1ff4c3991ebcc9728770d7, type: 2}
+    - target: {fileID: 2613812793314165077, guid: 8cae3d32228414e6e9750f835a302d11,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4079874743980586738, guid: 8cae3d32228414e6e9750f835a302d11,
         type: 3}
       propertyPath: m_IsActive
@@ -1698,6 +1703,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c4ad1aa45d1ff4c3991ebcc9728770d7, type: 2}
+    - target: {fileID: 2738073696703512014, guid: 8cae3d32228414e6e9750f835a302d11,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4079874744010777131, guid: 8cae3d32228414e6e9750f835a302d11,
         type: 3}
       propertyPath: m_TagString
@@ -2115,6 +2125,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c4ad1aa45d1ff4c3991ebcc9728770d7, type: 2}
+    - target: {fileID: 2738073696618910517, guid: 8cae3d32228414e6e9750f835a302d11,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4079874743980586738, guid: 8cae3d32228414e6e9750f835a302d11,
         type: 3}
       propertyPath: m_IsActive
@@ -4029,6 +4044,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c4ad1aa45d1ff4c3991ebcc9728770d7, type: 2}
+    - target: {fileID: 2613812795199290880, guid: 8cae3d32228414e6e9750f835a302d11,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4079874744182306261, guid: 8cae3d32228414e6e9750f835a302d11,
         type: 3}
       propertyPath: m_IsActive

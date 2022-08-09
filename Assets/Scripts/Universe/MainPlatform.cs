@@ -34,12 +34,15 @@ public class MainPlatform : MonoBehaviour
     [Button(ButtonSizes.Large), GUIColor(0f, 1f, 0f)]
     public void CreateRandomLevel()
     {
-        foreach (var floor in floors)
+        if (floors.Count > 0)
         {
-            DestroyImmediate(floor.gameObject);
-        }
+            foreach (var floor in floors)
+            {
+                DestroyImmediate(floor.gameObject);
+            }
 
-        floors.Clear();
+            floors.Clear();
+        }
 
         float lastY = Constants.FirstFloorYPos;
 
@@ -94,11 +97,16 @@ public class MainPlatform : MonoBehaviour
     }
 
     [Button(ButtonSizes.Large)]
-    public void ChangeObstacleTags()
+    public void ChangeTypes()
     {
         foreach (var floor in floors)
         {
-            floor.ChangeObstaclesTags();
+            floor.ChangeTags();
+        }
+
+        foreach (var floor in floors)
+        {
+            floor.AdjustMaterialsForLevelCreation();
         }
     }
 

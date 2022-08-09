@@ -48,6 +48,14 @@ public class Floor : MonoBehaviour
         }
     }
 
+    public void AdjustMaterialsForLevelCreation()
+    {
+        foreach (var platformPiece in platformPieces)
+        {
+            platformPiece.ChangeMaterialAndCollider();    
+        }
+    }
+
     private void ResetFloor()
     {
         foreach (Transform childTr in transform)
@@ -60,7 +68,7 @@ public class Floor : MonoBehaviour
         foreach (var platformPiece in platformPieces)
         {
             platformPiece.ChangeTypeToNormal();
-            platformPiece.ChangeMaterial();
+            platformPiece.ChangeMaterialAndCollider();
         }
     }
 
@@ -76,7 +84,7 @@ public class Floor : MonoBehaviour
     {
         foreach (var platformPiece in platformPieces)
         {
-            platformPiece.ChangeMaterial();
+            platformPiece.ChangeMaterialAndCollider();
         }
     }
 
@@ -128,7 +136,7 @@ public class Floor : MonoBehaviour
             }
 
             chosenPlatform.ChangeTypeToObstacle();
-            chosenPlatform.ChangeMaterial();
+            chosenPlatform.ChangeMaterialAndCollider();
             chosenPlatform.transform.tag = "Obstacle";
             obstacleCounter++;
 
@@ -155,7 +163,7 @@ public class Floor : MonoBehaviour
             }
 
             chosenPlatform.ChangeTypeToBreakable();
-            chosenPlatform.ChangeMaterial();
+            chosenPlatform.ChangeMaterialAndCollider();
             chosenPlatform.transform.tag = "Breakable";
             breakableCounter++;
 
@@ -166,7 +174,7 @@ public class Floor : MonoBehaviour
         }
     }
 
-    public void ChangeObstaclesTags()
+    public void ChangeTags()
     {
         foreach (var platformPiece in platformPieces)
         {
@@ -174,9 +182,14 @@ public class Floor : MonoBehaviour
             {
                 platformPiece.transform.tag = "Obstacle";
             }
+            
+            if (platformPiece.GetPlatformType() == PlatformPieceType.Breakable)
+            {
+                platformPiece.transform.tag = "Breakable";
+            }
         }
     }
-    
+
     public void ExplodeFloor(Material material)
     {
         SetHasExploded();

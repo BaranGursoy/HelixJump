@@ -33,7 +33,7 @@ public class PlatformPiece : MonoBehaviour
 
         if (randomNumber == 15)
         {
-            boostObj.SetActive(true);
+            //boostObj.SetActive(true);
         }
 
         if (randomNumber == 0)
@@ -55,9 +55,8 @@ public class PlatformPiece : MonoBehaviour
         }
     }*/
     
-    //FIXME butonla direkt platformu ayarlayabildigimiz platforma ozel bir editor scripti yaz
     
-    public void ChangeMaterial()
+    public void ChangeMaterialAndCollider()
     {
         if (meshRenderer == null)
         {
@@ -69,17 +68,21 @@ public class PlatformPiece : MonoBehaviour
             if (!CompareTag("Finish"))
             {
                 meshRenderer.material = normalMat;
+                collider.isTrigger = false;
             }
         }
 
         if(platformPieceType == PlatformPieceType.Obstacle)
         {
             meshRenderer.material = obstacleMat;
+            collider.isTrigger = false;
         }
 
         if (platformPieceType == PlatformPieceType.Breakable)
         {
             meshRenderer.material = breakableMat;
+            collider.isTrigger = true;
+            collider.transform.tag = "Breakable";
         }
     }
     
@@ -176,7 +179,7 @@ public class PlatformPiece : MonoBehaviour
 
     private void CloseCollider()
     {
-        collider.isTrigger = true;
+        collider.enabled = false;
     }
 
     private void OnDestroy()

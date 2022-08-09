@@ -94,6 +94,14 @@ public class Ball : MonoBehaviour
             {
                 GameManager.Instance.GameFinished(false);
                 rb.isKinematic = true;
+
+                var obstacleAnimationController = collision.transform.GetComponentInParent<VerticalObstacleAnimationController>();
+
+                if (obstacleAnimationController)
+                {
+                    obstacleAnimationController.StopAnimation();
+                }
+                
                 return;
             }
             
@@ -101,12 +109,6 @@ public class Ball : MonoBehaviour
            
         }
 
-        if (collision.transform.CompareTag("Breakable"))
-        {
-            var platformPiece = collision.transform.GetComponent<PlatformPiece>();
-            platformPiece.BreakableExplode();
-        }
-        
         if (collision.transform.CompareTag("PlatformPiece"))
         {
             passedCurrentFloor = false;
@@ -161,6 +163,12 @@ public class Ball : MonoBehaviour
         {
             ActivateBoostMode();
             Destroy(other.gameObject);
+        }
+        
+        if (other.CompareTag("Breakable"))
+        {
+            var platformPiece = other.transform.GetComponentInParent<PlatformPiece>();
+            platformPiece.BreakableExplode();
         }
     }
 
