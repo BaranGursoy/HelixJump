@@ -46,20 +46,6 @@ public class PlatformPiece : MonoBehaviour
             verticleObstacleObj.SetActive(true);
         }
     }
-
-
-    /*public void SearchNeighbor(ref List<PlatformPiece> platformPieces)
-    {
-        foreach (var platformPiece in platformPieces)
-        {
-            if (Math.Abs(Mathf.Abs(platformPiece.transform.rotation.eulerAngles.y % 360f -
-                                   transform.rotation.eulerAngles.y % 360f) - 45f) < 0.1F)
-            {
-                neighbors.Add();
-            }
-        }
-    }*/
-    
     
     public void ChangeMaterialAndCollider()
     {
@@ -145,11 +131,6 @@ public class PlatformPiece : MonoBehaviour
             rb.AddForce(force, ForceMode.Impulse);
             StartCoroutine(MakeExplodedPieceTransparentCor()); 
         }
-    }
-
-    public int GetBreakableHealth()
-    {
-        return breakableHealth;
     }
 
     private void ExplodeBreakablePieces()

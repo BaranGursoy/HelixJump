@@ -191,12 +191,7 @@ public class Ball : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-
-    public bool CheckForShouldCameraFollow()
-    {
-        return !(lastCollidedFloorTr == currentFloorTr);
-    }
-
+    
     public void Bounce()
     {
         if (!PlayerController.Instance.GetPlaying())
@@ -331,7 +326,7 @@ public class Ball : MonoBehaviour
         CameraController.Instance.IncreaseFov();
     }
 
-    private IEnumerator BoostModeCor() // FIXME belki kat sayisina gore yapilabilir
+    private IEnumerator BoostModeCor()
     {
         yield return new WaitForSeconds(1.2f);
         DeactivateBoostMode();

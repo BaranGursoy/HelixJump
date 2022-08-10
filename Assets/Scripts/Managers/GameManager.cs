@@ -26,6 +26,10 @@ namespace Managers
         
         public int playerScore;
         public int bestScore;
+
+        [SerializeField] private bool isAdminMode;
+        [SerializeField] private int wantedLevelId;
+        
         private int levelId = 1;
 
         private CanvasManager canvasManager;
@@ -74,13 +78,24 @@ namespace Managers
                 Destroy(lastCreatedLevel);
             }
 
-            levelId = PlayerPrefs.GetInt("LevelId");
-
-            if (levelId == 0)
+            switch (isAdminMode)
             {
-                levelId = 1;
+                case true:
+                    levelId = wantedLevelId;
+                    break;
+                case false:
+                {
+                    levelId = PlayerPrefs.GetInt("LevelId");
+
+                    if (levelId == 0)
+                    {
+                        levelId = 1;
+                    }
+
+                    break;
+                }
             }
-            
+
             canvasManager.ChangeLevelIndicatorNumbers(levelId);
 
             var levelPrefab = levelManager.GetNextLevel(levelId);
@@ -93,6 +108,11 @@ namespace Managers
 
         public void IncreaseLevelId()
         {
+            if (isAdminMode)
+            {
+                return;
+            }
+            
             levelId++;
             PlayerPrefs.SetInt("LevelId", levelId);
         }

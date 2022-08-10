@@ -852,5 +852,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7204624083319238497, guid: 4c4d41052aa294b2baa0a62d4a7f0a17,
         type: 3}
+    - target: {fileID: 8947160647662587888, guid: 775e5f36e042a4bddae2662aa5ecea92,
+        type: 3}
+      propertyPath: isAdminMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947160647662587888, guid: 775e5f36e042a4bddae2662aa5ecea92,
+        type: 3}
+      propertyPath: wantedLevelId
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 775e5f36e042a4bddae2662aa5ecea92, type: 3}
