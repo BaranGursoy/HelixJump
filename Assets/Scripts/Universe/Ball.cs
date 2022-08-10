@@ -87,6 +87,27 @@ public class Ball : MonoBehaviour
         {
             GameManager.Instance.GameFinished(true);
         }
+        
+        if (collision.transform.CompareTag("Obstacle"))
+        {
+            if (!feverModeActive && !boostModeActive)
+            {
+                GameManager.Instance.GameFinished(false);
+                rb.isKinematic = true;
+
+                var obstacleAnimationController =
+                    collision.transform.GetComponentInParent<VerticalObstacleAnimationController>();
+
+                if (obstacleAnimationController)
+                {
+                    obstacleAnimationController.StopAnimation();
+                }
+
+                return;
+            }
+
+            ExplodeFloorWithFeverMode(collision);
+        }
 
         if (collision.transform.CompareTag("Breakable"))
         {
@@ -114,28 +135,7 @@ public class Ball : MonoBehaviour
             }
         }
 
-        if (collision.transform.CompareTag("Obstacle"))
-        {
-            if (!feverModeActive && !boostModeActive)
-            {
-                GameManager.Instance.GameFinished(false);
-                rb.isKinematic = true;
-
-                var obstacleAnimationController =
-                    collision.transform.GetComponentInParent<VerticalObstacleAnimationController>();
-
-                if (obstacleAnimationController)
-                {
-                    obstacleAnimationController.StopAnimation();
-                }
-
-                return;
-            }
-
-            ExplodeFloorWithFeverMode(collision);
-        }
-
-        if (collision.transform.CompareTag("PlatformPiece"))
+        else if (collision.transform.CompareTag("PlatformPiece"))
         {
             passedCurrentFloor = false;
 
@@ -171,7 +171,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionStay(Collision collisionInfo)
     {
-        if (collisionInfo.transform.CompareTag("PlatformPiece"))
+        if (collisionInfo.transform.CompareTag("PlatformPiece") || collisionInfo.transform.CompareTag("Breakable"))
         {
             collisionBugTimer += Time.deltaTime;
 
