@@ -87,7 +87,33 @@ public class Ball : MonoBehaviour
         {
             GameManager.Instance.GameFinished(true);
         }
-        
+
+        if (collision.transform.CompareTag("Breakable"))
+        {
+            var platformPiece = collision.transform.GetComponentInParent<PlatformPiece>();
+            platformPiece.BreakableHit(this);
+            
+            passedCurrentFloor = false;
+
+            collisionBugTimer = 0f;
+            
+            var floorTr = collision.transform.parent;
+
+            if (feverModeActive)
+            {
+                ExplodeFloorWithFeverMode(collision);
+            }
+
+            lastCollidedFloorTr = floorTr;
+
+            isJumpingAfterBoost = false;
+
+            if (lastCollidedFloorTr == currentFloorTr)
+            {
+                comboMultiplier = 1;
+            }
+        }
+
         if (collision.transform.CompareTag("Obstacle"))
         {
             if (!feverModeActive && !boostModeActive)
@@ -95,18 +121,18 @@ public class Ball : MonoBehaviour
                 GameManager.Instance.GameFinished(false);
                 rb.isKinematic = true;
 
-                var obstacleAnimationController = collision.transform.GetComponentInParent<VerticalObstacleAnimationController>();
+                var obstacleAnimationController =
+                    collision.transform.GetComponentInParent<VerticalObstacleAnimationController>();
 
                 if (obstacleAnimationController)
                 {
                     obstacleAnimationController.StopAnimation();
                 }
-                
+
                 return;
             }
-            
+
             ExplodeFloorWithFeverMode(collision);
-           
         }
 
         if (collision.transform.CompareTag("PlatformPiece"))
@@ -164,12 +190,6 @@ public class Ball : MonoBehaviour
             ActivateBoostMode();
             Destroy(other.gameObject);
         }
-        
-        if (other.CompareTag("Breakable"))
-        {
-            var platformPiece = other.transform.GetComponentInParent<PlatformPiece>();
-            platformPiece.BreakableExplode();
-        }
     }
 
     public bool CheckForShouldCameraFollow()
@@ -177,7 +197,7 @@ public class Ball : MonoBehaviour
         return !(lastCollidedFloorTr == currentFloorTr);
     }
 
-    private void Bounce()
+    public void Bounce()
     {
         if (!PlayerController.Instance.GetPlaying())
         {

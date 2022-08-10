@@ -21,6 +21,11 @@ public class PlatformPiece : MonoBehaviour
     [SerializeField] private GameObject boostObj;
     [SerializeField] private GameObject verticleObstacleObj;
     [SerializeField] private GameObject breakableObj;
+
+    [SerializeField] private List<Collider> breakableColliders;
+    [SerializeField] private List<Rigidbody> breakableRigidbodies;
+
+    private int breakableHealth = 2;
     
     public void AdjustBoostsAndVerticalObstacles()
     {
@@ -81,7 +86,7 @@ public class PlatformPiece : MonoBehaviour
         if (platformPieceType == PlatformPieceType.Breakable)
         {
             meshRenderer.material = breakableMat;
-            collider.isTrigger = true;
+            collider.isTrigger = false;
             collider.transform.tag = "Breakable";
         }
     }
@@ -113,21 +118,51 @@ public class PlatformPiece : MonoBehaviour
     {
         return platformPieceType;
     }
-    
-    public void BreakableExplode()
-    {
-        meshRenderer.enabled = false;
-        breakableObj.SetActive(true);
-        
-        rb.isKinematic = false;
 
-        CloseCollider();
+    public void BreakableHit(Ball ball)
+    {
+        breakableHealth--;
+
+        if (breakableHealth >= 1)
+        {
+            ball.Bounce();
+            meshRenderer.enabled = false;
+            breakableObj.SetActive(true);
+            
+        }
+
+        if (breakableHealth == 0)
+        {
+            ExplodeBreakablePieces();
+            
+            rb.isKinematic = false;
+
+            CloseCollider();
         
-        transform.SetParent(null);
+            transform.SetParent(null);
         
-        var force = (-transform.up + transform.right) * explosionForce * 1.5f;
-        rb.AddForce(force, ForceMode.Impulse);
-        StartCoroutine(MakeExplodedPieceTransparentCor()); 
+            var force = (-transform.up + transform.right) * explosionForce * 1.5f;
+            rb.AddForce(force, ForceMode.Impulse);
+            StartCoroutine(MakeExplodedPieceTransparentCor()); 
+        }
+    }
+
+    public int GetBreakableHealth()
+    {
+        return breakableHealth;
+    }
+
+    private void ExplodeBreakablePieces()
+    {
+        foreach (var breakableCollider in breakableColliders)
+        {
+            breakableCollider.isTrigger = false;
+        }
+
+        foreach (var rb in breakableRigidbodies)
+        {
+            rb.isKinematic = false;
+        }
     }
 
     public void ExplodePiece(Material material)

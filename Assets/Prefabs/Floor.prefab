@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 5113298830978479969}
   - {fileID: 5113298832608339432}
   - {fileID: 5113298832890043629}
+  disabledPieces: []
 --- !u!1001 &953057576661282650
 PrefabInstance:
   m_ObjectHideFlags: 0
