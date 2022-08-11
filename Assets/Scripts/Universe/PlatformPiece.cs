@@ -38,7 +38,7 @@ public class PlatformPiece : MonoBehaviour
 
         if (randomNumber == 15)
         {
-            //boostObj.SetActive(true);
+            boostObj.SetActive(true);
         }
 
         if (randomNumber == 0)

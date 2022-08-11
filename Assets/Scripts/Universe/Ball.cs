@@ -10,7 +10,6 @@ public class Ball : MonoBehaviour
     [SerializeField] private float bounceForce;
     [SerializeField] private ParticleSystem splashParticle;
     [SerializeField] private BallAnimationController ballAnimationController;
-    [SerializeField] private GameObject splashSpritePrefab;
     [SerializeField] private MainPlatform mainPlatform;
     
     [SerializeField] private MeshRenderer ballMeshRenderer;
@@ -106,7 +105,9 @@ public class Ball : MonoBehaviour
                 return;
             }
 
+         
             ExplodeFloorWithFeverMode(collision);
+            
         }
 
         if (collision.transform.CompareTag("Breakable"))
@@ -198,6 +199,11 @@ public class Ball : MonoBehaviour
         {
             return;
         }
+
+        if (isJumping || isJumpingAfterBoost)
+        {
+            return;
+        }
         
         isJumping = true;
         
@@ -222,10 +228,11 @@ public class Ball : MonoBehaviour
             return;
         }
         
+        Debug.Log("Bounce after fever");
+        
         splashParticle.Play();
         ballAnimationController.PlayBounceAnimation();
-        isJumpingAfterBoost = true;
-        
+
         var force = bounceForce * Vector3.up;
         rb.AddForce(force, ForceMode.Impulse);
     }
@@ -279,6 +286,7 @@ public class Ball : MonoBehaviour
         
         feverModeActive = true;
         ChangeMaterialsForFeverMode();
+        isJumpingAfterBoost = true;
         feverModeParticleObj.SetActive(true);
 
         CameraController.Instance.ActivateVignette(feverModeMat);
@@ -317,6 +325,7 @@ public class Ball : MonoBehaviour
         boostModeActive = true;
         ballCollider.isTrigger = true;
         ChangeMaterialsForFeverMode();
+        isJumpingAfterBoost = true;
         mainPlatform.ChangeAllFloorMaterials(feverModeMat);
         StartCoroutine(BoostModeCor());
         
