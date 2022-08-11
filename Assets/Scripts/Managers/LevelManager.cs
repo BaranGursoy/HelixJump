@@ -39,9 +39,7 @@ public class LevelManager : MonoBehaviour
         {
             actualLevelIndex = levels.Count - 1;
         }
-        
-        Debug.Log(actualLevelIndex); // FIXME delete this
-        
+
         return levels[actualLevelIndex];
     }
 }

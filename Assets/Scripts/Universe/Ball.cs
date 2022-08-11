@@ -10,7 +10,6 @@ public class Ball : MonoBehaviour
     [SerializeField] private float bounceForce;
     [SerializeField] private ParticleSystem splashParticle;
     [SerializeField] private BallAnimationController ballAnimationController;
-    [SerializeField] private GameObject splashSpritePrefab;
     [SerializeField] private MainPlatform mainPlatform;
     
     [SerializeField] private MeshRenderer ballMeshRenderer;
@@ -95,21 +94,49 @@ public class Ball : MonoBehaviour
                 GameManager.Instance.GameFinished(false);
                 rb.isKinematic = true;
 
-                var obstacleAnimationController = collision.transform.GetComponentInParent<VerticalObstacleAnimationController>();
+                var obstacleAnimationController =
+                    collision.transform.GetComponentInParent<VerticalObstacleAnimationController>();
 
                 if (obstacleAnimationController)
                 {
                     obstacleAnimationController.StopAnimation();
                 }
-                
+
                 return;
             }
-            
+
+         
             ExplodeFloorWithFeverMode(collision);
-           
+            
         }
 
-        if (collision.transform.CompareTag("PlatformPiece"))
+        if (collision.transform.CompareTag("Breakable"))
+        {
+            var platformPiece = collision.transform.GetComponentInParent<PlatformPiece>();
+            platformPiece.BreakableHit(this);
+            
+            passedCurrentFloor = false;
+
+            collisionBugTimer = 0f;
+            
+            var floorTr = collision.transform.parent;
+
+            if (feverModeActive)
+            {
+                ExplodeFloorWithFeverMode(collision);
+            }
+
+            lastCollidedFloorTr = floorTr;
+
+            isJumpingAfterBoost = false;
+
+            if (lastCollidedFloorTr == currentFloorTr)
+            {
+                comboMultiplier = 1;
+            }
+        }
+
+        else if (collision.transform.CompareTag("PlatformPiece"))
         {
             passedCurrentFloor = false;
 
@@ -145,7 +172,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionStay(Collision collisionInfo)
     {
-        if (collisionInfo.transform.CompareTag("PlatformPiece"))
+        if (collisionInfo.transform.CompareTag("PlatformPiece") || collisionInfo.transform.CompareTag("Breakable"))
         {
             collisionBugTimer += Time.deltaTime;
 
@@ -164,22 +191,16 @@ public class Ball : MonoBehaviour
             ActivateBoostMode();
             Destroy(other.gameObject);
         }
-        
-        if (other.CompareTag("Breakable"))
-        {
-            var platformPiece = other.transform.GetComponentInParent<PlatformPiece>();
-            platformPiece.BreakableExplode();
-        }
     }
-
-    public bool CheckForShouldCameraFollow()
-    {
-        return !(lastCollidedFloorTr == currentFloorTr);
-    }
-
-    private void Bounce()
+    
+    public void Bounce()
     {
         if (!PlayerController.Instance.GetPlaying())
+        {
+            return;
+        }
+
+        if (isJumping || isJumpingAfterBoost)
         {
             return;
         }
@@ -207,10 +228,11 @@ public class Ball : MonoBehaviour
             return;
         }
         
+        Debug.Log("Bounce after fever");
+        
         splashParticle.Play();
         ballAnimationController.PlayBounceAnimation();
-        isJumpingAfterBoost = true;
-        
+
         var force = bounceForce * Vector3.up;
         rb.AddForce(force, ForceMode.Impulse);
     }
@@ -264,6 +286,7 @@ public class Ball : MonoBehaviour
         
         feverModeActive = true;
         ChangeMaterialsForFeverMode();
+        isJumpingAfterBoost = true;
         feverModeParticleObj.SetActive(true);
 
         CameraController.Instance.ActivateVignette(feverModeMat);
@@ -302,6 +325,7 @@ public class Ball : MonoBehaviour
         boostModeActive = true;
         ballCollider.isTrigger = true;
         ChangeMaterialsForFeverMode();
+        isJumpingAfterBoost = true;
         mainPlatform.ChangeAllFloorMaterials(feverModeMat);
         StartCoroutine(BoostModeCor());
         
@@ -311,7 +335,7 @@ public class Ball : MonoBehaviour
         CameraController.Instance.IncreaseFov();
     }
 
-    private IEnumerator BoostModeCor() // FIXME belki kat sayisina gore yapilabilir
+    private IEnumerator BoostModeCor()
     {
         yield return new WaitForSeconds(1.2f);
         DeactivateBoostMode();

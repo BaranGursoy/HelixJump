@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 public class Floor : MonoBehaviour
 {
     [SerializeField] private List<PlatformPiece> platformPieces;
-    [SerializeField] private List<PlatformPiece> disabledPieces;
     private bool isFirstFloor;
     private bool isFinishFloor;
     private bool hasExploded;
@@ -201,33 +200,4 @@ public class Floor : MonoBehaviour
             }
         }
     }
-
-    /*private void SortPlatformPieces()
-    {
-        platformPieces = platformPieces.OrderBy(x => x.transform.rotation.eulerAngles.y).ToList();
-    }
-
-    private void SetDisabledPieces()
-    {
-        foreach (Transform child in transform)
-        {
-            if (!child.gameObject.activeInHierarchy)
-            {
-                disabledPieces.Add(child.GetComponent<PlatformPiece>());
-            }
-        }
-    }
-
-    public void MakeCompoundPieces()
-    {
-        SearchForNeighbors();
-    }*/
-
-    /*private void SearchForNeighbors()
-    {
-        foreach (var platformPiece in platformPieces)
-        {
-            platformPiece.SearchNeighbor(ref platformPieces);
-        }
-    }*/
 }
